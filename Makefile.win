@@ -1,0 +1,43 @@
+# Project: FinallyHome Server
+# Compiler: Default GCC compiler
+# Compiler Type: MingW 3
+# Makefile created by wxDev-C++ IDE 7.4.2.569 on 30-07-14 15:45
+
+WXLIBNAME = wxmsw29u
+CPP       = g++.exe
+CC        = gcc.exe
+WINDRES   = "windres.exe"
+OBJ       = obj/main.o obj/FinallyHome_Server_private.res
+LINKOBJ   = "obj/main.o" obj/FinallyHome_Server_private.res
+LIBS      = -L"C:/Programy/Dev-Cpp/lib/gcc/mingw32" -lgdi32 -lcomctl32 -lwsock32 -mwindows -mwindows  -msse2 
+INCS      = -I"C:/Programy/Dev-Cpp/MinGW32/include" -I"C:/Programy/Dev-Cpp/include"
+CXXINCS   = -I"C:/Programy/Dev-Cpp/MinGW32/include" -I"C:/Programy/Dev-Cpp" -I"C:/Programy/Dev-Cpp/include/common" -I"C:/Programy/Dev-Cpp/include"
+RCINCS    = --include-dir "C:/Programy/WXDEV-~1/include/common"
+BIN       = bin/Server.exe
+DEFINES   = 
+CXXFLAGS  = $(CXXINCS) $(DEFINES)   -fexpensive-optimizations -O3 -msse2
+CFLAGS    = $(INCS) $(DEFINES)   -fexpensive-optimizations -O3 -msse2
+GPROF     = gprof.exe
+ifeq ($(OS),Windows_NT)
+   RM = del /Q
+   FixPath = $(subst /,\,$1)
+else
+   RM = rm -f
+   FixPath = $1
+endif
+LINK      = g++.exe
+
+.PHONY: all all-before all-after clean clean-custom
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	$(RM) $(call FixPath,$(LINKOBJ)) "$(call FixPath,$(BIN))"
+
+$(BIN): $(OBJ)
+	$(LINK) $(LINKOBJ) -o "$(BIN)" $(LIBS) 
+
+obj/main.o: $(GLOBALDEPS) src/main.cpp
+	$(CPP) -c src/main.cpp -o obj/main.o $(CXXFLAGS)
+
+obj/FinallyHome_Server_private.res: obj/FinallyHome_Server_private.rc 
+	$(WINDRES) --input-format=rc -o obj/FinallyHome_Server_private.res $(RCINCS) obj/FINALL~1.RC -O coff
