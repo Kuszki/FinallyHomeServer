@@ -1,7 +1,7 @@
 [Project]
 FileName=FinallyHome Server.dev
 Name=FinallyHome Server
-UnitCount=1
+UnitCount=3
 PchHead=-1
 PchSource=-1
 Ver=3
@@ -14,7 +14,7 @@ Folders=
 Major=1
 Minor=0
 Release=0
-Build=4
+Build=43
 LanguageID=1045
 CharsetID=1252
 CompanyName=KuszkiDevGroup
@@ -28,7 +28,7 @@ ProductName=FinallyHome Server
 ProductVersion=
 AutoIncBuildNrOnRebuild=1
 AutoIncBuildNrOnCompile=0
-UnitCount=1
+UnitCount=5
 
 [Profile1]
 ProfileName=MingW gcc
@@ -58,8 +58,38 @@ SupportXPThemes=1
 CompilerSet=0
 CompilerType=0
 
+[Unit1]
+FileName=src\main.cpp
+CompileCpp=1
+Folder=FinallyHome Server
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit2]
+FileName=src\server.cpp
+CompileCpp=0
+Folder=
+Compile=0
+Link=0
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=	$(CC) -c server.cpp -o obj/server.o $(CFLAGS)
+
+[Unit3]
+FileName=src\server.hpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
 [Profile2]
-ProfileName=MS Visual C++
+ProfileName=
 Type=0
 ObjFiles=
 Includes=
@@ -68,13 +98,13 @@ ResourceIncludes=
 MakeIncludes=
 Compiler=
 CppCompiler=
-Linker=user32.lib_@@_
+Linker=
 PreprocDefines=
-CompilerSettings=000000000000010000000000000000000000
+CompilerSettings=
 Icon=
-ExeOutput=Output\Visual C++
+ExeOutput=
 ImagesOutput=Images\
-ObjectOutput=Objects\Visual C++
+ObjectOutput=
 OverrideOutput=0
 OverrideOutputName=
 HostApplication=
@@ -83,11 +113,21 @@ UseCustomMakefile=0
 CustomMakefile=
 IncludeVersionInfo=0
 SupportXPThemes=0
-CompilerSet=9
-CompilerType=9
+CompilerSet=0
+CompilerType=0
 
-[Unit1]
-FileName=src\main.cpp
+[Unit4]
+FileName=src\callbacks.cpp
+CompileCpp=0
+Folder=FinallyHome Server
+Compile=0
+Link=0
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=	$(CC) -c callbacks.cpp -o obj/callbacks.o $(CFLAGS)
+
+[Unit5]
+FileName=src\callbacks.hpp
 CompileCpp=1
 Folder=FinallyHome Server
 Compile=1
