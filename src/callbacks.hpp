@@ -25,14 +25,14 @@ Po dołączeniu go do projektu automatycznie dołączony zostanie też plik call
  *
  *  Obsługuje dodatkowe zdarzenia przy połączeniu, odbieraniu informacji i zakończaniu połączenia.
  *
- */ LRESULT ServerHandler(SRV*, UINT, SOCKET)
+ */ LRESULT ServerHandler(SRV* srv, UINT event, SOCKET socket);
 
 /*! \brief Funkcja wątku konsoli.
- *  \param [in] Wskaźnik na dodatkowe parametry.
+ *  \param [in] pvArgs Wskaźnik na dodatkowe parametry.
  *  \return Kod operacji. Domyślnie 0.
  *
  *  Pozwala obsługiwać wejście konsoli w osobnym wątku.
  *
- */ DWORD WINAPI ConsoleHandler(LPVOID)
+ */ DWORD WINAPI ConsoleHandler(LPVOID pvArgs);
 
 #endif

@@ -14,7 +14,7 @@ Folders=
 Major=1
 Minor=0
 Release=0
-Build=43
+Build=48
 LanguageID=1045
 CharsetID=1252
 CompanyName=KuszkiDevGroup
@@ -28,7 +28,7 @@ ProductName=FinallyHome Server
 ProductVersion=
 AutoIncBuildNrOnRebuild=1
 AutoIncBuildNrOnCompile=0
-UnitCount=5
+UnitCount=3
 
 [Profile1]
 ProfileName=MingW gcc
@@ -54,7 +54,7 @@ CommandLine=
 UseCustomMakefile=0
 CustomMakefile=
 IncludeVersionInfo=1
-SupportXPThemes=1
+SupportXPThemes=0
 CompilerSet=0
 CompilerType=0
 
@@ -76,12 +76,32 @@ Compile=0
 Link=0
 Priority=1000
 OverrideBuildCmd=0
-BuildCmd=	$(CC) -c server.cpp -o obj/server.o $(CFLAGS)
+BuildCmd=$(CC) -c server.cpp -o obj/server.o $(CFLAGS)
 
 [Unit3]
 FileName=src\server.hpp
 CompileCpp=1
 Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit4]
+FileName=src\callbacks.cpp
+CompileCpp=0
+Folder=FinallyHome Server
+Compile=0
+Link=0
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=$(CC) -c callbacks.cpp -o obj/callbacks.o $(CFLAGS)
+
+[Unit5]
+FileName=src\callbacks.hpp
+CompileCpp=1
+Folder=FinallyHome Server
 Compile=1
 Link=1
 Priority=1000
@@ -115,24 +135,4 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerType=0
-
-[Unit4]
-FileName=src\callbacks.cpp
-CompileCpp=0
-Folder=FinallyHome Server
-Compile=0
-Link=0
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=	$(CC) -c callbacks.cpp -o obj/callbacks.o $(CFLAGS)
-
-[Unit5]
-FileName=src\callbacks.hpp
-CompileCpp=1
-Folder=FinallyHome Server
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
 

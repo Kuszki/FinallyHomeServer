@@ -15,7 +15,7 @@ Plik jest dołączany przez server.hpp.
 */
 
 ServerCore::ServerCore(void)
-: iConfig(S"../conf/config.ini"), Console(true)
+: iConfig(S"../conf/config.ini"), cCon(true)
 {
 
     mVars.Add(S"porch.light.on", iConfig.GetInt(S"VARS", S"porch.light.on"));
