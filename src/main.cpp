@@ -14,6 +14,16 @@
 Dołącza automatycznie wszystkie zależności.
 */
 
+/*! \mainpage FinallyHomeServer
+
+    \section basic_sec O projekcie
+
+    Serwer aplikacji <a target="_blank" href="https://github.com/Kuszki/FinallyHome">FinallyHome</a> zaprojektowany na platformę Win32. Kod źródłowy znajdziesz <a target="_blank" href="https://github.com/Kuszki/FinallyHomeServer">tutaj</a>.
+
+    Jeśli znalazłeś błąd, masz jakieś propozycje lub uwagi, zgłoś to w <a target="_blank" href="https://github.com/Kuszki/FinallyHomeServer/issues">bugtrackerze</a> na GitHubie.
+
+*/
+
 #include "..\..\KuszkAPI\KuszkAPI.hpp"
 
 #include "callbacks.hpp"

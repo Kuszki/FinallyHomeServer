@@ -17,7 +17,7 @@ Po dołączeniu go do projektu automatycznie dołączony zostanie też plik serv
 #ifndef _FINALLYHOMESERVER_CORE_HPP
 #define _FINALLYHOMESERVER_CORE_HPP
 
-#define IF_DEBUG if (bDebug)
+#define IF_DEBUG if (bDebug) //!< Skrócone wywołanie konstrukcji warunkowej.
 
 using namespace KuszkAPI;
 
