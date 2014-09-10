@@ -14,38 +14,52 @@
 Plik jest dołączany przez callbacks.hpp.
 */
 
+extern ServerCore Server;
+
 LRESULT ServerHandler(SRV* srv, UINT event, SOCKET id)
 {
-    switch (event){
-        case FD_ACCEPT:
-            //Server.Console << "Polaczenie nawiazane, ID klienta: " << id << "; Adress: " << srv->Clients[id].GetAddress() << '\n';
-        break;
-        case FD_READ:
-        {
-            Containers::Array<char> aData;
-            unsigned uParam = srv->Clients[id].Recv(aData);
-            aData.Add(0);
-            //Server.Console << "Odebrano bajtow: " << uParam << "; Tresc: \"" << aData.GetBegin() << "\"\n";
-        }
-        break;
-        case FD_CLOSE:
-            //Server.Console << "Polaczenie zakonczone, ID klienta: " << id << '\n';
-        break;
-    }
+     switch (event){
 
-    return 0;
+          case FD_ACCEPT:
+               Server.OnConnect(id);
+          break;
+
+		case FD_READ:
+		{
+			Containers::Array<char> aData;
+
+			srv->Clients[id].Recv(aData);
+
+			aData.Add(0);
+
+			Server.OnRead(aData);
+		}
+		break;
+
+		case FD_CLOSE:
+			Server.Console << T("Polaczenie zakonczone, ID klienta: ") << id << T('\n');
+
+		break;
+	}
+
+	return 0;
 }
 
 DWORD WINAPI ConsoleHandler(LPVOID pvArgs)
 {
-    while (true){
-        Containers::String sTmp;
-        //Server.Console >> sTmp;
-        Containers::Array<char> aData(sTmp.Str(), sTmp.Capacity() + 1);
-        //Server.Console << "Wyslano bajtow: " << aData.Capacity() + 1 << "; Dane: \"" << aData.GetBegin() << "\"\n";
-        aData.Add('\n', -1);
-        //Server.Announce(aData);
-    }
+	while (true){
 
-    return 0;
+		Containers::String sTmp;
+		Server.Console >> sTmp;
+
+		Containers::Array<char> aData(sTmp.Str(), sTmp.Capacity());
+
+		aData.Add(T("\n\0"), 2);
+
+		//Server.Announce(aData);
+
+		Sleep(100);
+	}
+
+	return 0;
 }

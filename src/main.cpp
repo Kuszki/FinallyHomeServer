@@ -16,12 +16,15 @@ Dołącza automatycznie wszystkie zależności.
 
 #include "..\..\KuszkAPI\KuszkAPI.hpp"
 
-#include "server.hpp"
 #include "callbacks.hpp"
+#include "server.hpp"
+
+#include "callbacks.cpp"
+#include "server.cpp"
 
 using namespace KuszkAPI;
 
-ServerCore Server;
+ServerCore Server(true);
 
 int WINAPI WinMain (HINSTANCE hThisInstance,
                     HINSTANCE hPrevInstance,
@@ -30,12 +33,6 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
 
 {
     MSG mMsg;
-
-    //Server.Listen(9096, ServerHandler);
-
-    //Core::Threads<int> ConsThr;
-    //ConsThr.Add(0, ConsoleHandler);
-    //ConsThr.Start(0);
 
     while (GetMessage(&mMsg, NULL, 0, 0)){
         TranslateMessage(&mMsg);
