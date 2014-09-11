@@ -2,7 +2,7 @@
 
     FinallyHome Server "callback" module header
 
-    copyright: KuszkiDevDroup
+    copyright: KuszkiDevGroup
 
     license: GNU GPL v2
 

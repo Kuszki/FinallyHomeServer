@@ -2,7 +2,7 @@
 
     FinallyHome Server "callback" module source
 
-    copyright: KuszkiDevDroup
+    copyright: KuszkiDevGroup
 
     license: GNU GPL v2
 
@@ -14,14 +14,14 @@
 Plik jest dołączany przez callbacks.hpp.
 */
 
-extern ServerCore Server;
+extern ServerCore Eng;
 
 LRESULT ServerHandler(SRV* srv, UINT event, SOCKET id)
 {
      switch (event){
 
           case FD_ACCEPT:
-               Server.OnConnect(id);
+               Eng.OnConnect(id);
           break;
 
 		case FD_READ:
@@ -32,13 +32,12 @@ LRESULT ServerHandler(SRV* srv, UINT event, SOCKET id)
 
 			aData.Add(0);
 
-			Server.OnRead(aData);
+			Eng.OnRead(aData);
 		}
 		break;
 
 		case FD_CLOSE:
-			Server.Console << T("Polaczenie zakonczone, ID klienta: ") << id << T('\n');
-
+			Eng.OnDisconnect(id);
 		break;
 	}
 
@@ -47,18 +46,17 @@ LRESULT ServerHandler(SRV* srv, UINT event, SOCKET id)
 
 DWORD WINAPI ConsoleHandler(LPVOID pvArgs)
 {
+	ServerCore* psSrv = (ServerCore*) pvArgs;
+
 	while (true){
 
 		Containers::String sTmp;
-		Server.Console >> sTmp;
 
-		Containers::Array<char> aData(sTmp.Str(), sTmp.Capacity());
+		psSrv->Console << T("\n$: ") >> sTmp << T("\n");
 
-		aData.Add(T("\n\0"), 2);
 
-		//Server.Announce(aData);
+		if (sTmp) psSrv->Parse(sTmp);
 
-		Sleep(100);
 	}
 
 	return 0;

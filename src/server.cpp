@@ -2,7 +2,7 @@
 
     FinallyHome Server "core" module source
 
-    copyright: KuszkiDevDroup
+    copyright: KuszkiDevGroup
 
     license: GNU GPL v2
 
@@ -14,8 +14,8 @@
 Plik jest dołączany przez server.hpp.
 */
 
-ServerCore::ServerCore(bool bDbg)
-: Console(true), bDebug(bDbg)
+ServerCore::ServerCore(void)
+: Console(true), bDebug(true)
 {
 
 	if (bDebug) Console << T("\n >> Inicjuje liste zmiennych\t");
@@ -40,9 +40,12 @@ ServerCore::ServerCore(bool bDbg)
 	if (bDebug) Console << T("[OK]\n");
 
 	tThr.Add(0, ConsoleHandler);
-	tThr.Start(0);
 
      LoadSettings();
+
+     tThr.Start(0, this);
+
+     Sleep(100);
 
 }
 
@@ -58,9 +61,9 @@ bool ServerCore::Start(void)
 
 	IF_DEBUG Console << T("\n >> Uruchamiam serwer\t");
 
-	bool bOK = sSrv.Listen((int) mVars[S T("port")], ServerHandler);
+	bool bOK = sSrv.Listen(9096, ServerHandler); //(short unsigned) mVars[S T("port")]
 
-	IF_DEBUG Console << bOK ? T("[OK]\n") : T("[FAIL]\n");
+	IF_DEBUG Console << (bOK ? T("[OK]\n") : T("[FAIL]\n"));
 
 	return bOK;
 
@@ -136,7 +139,14 @@ void ServerCore::SaveSettings(const STR& sFile)
 void ServerCore::OnConnect(SOCKET sClient)
 {
 
-	IF_DEBUG Console << T("\n >> Polaczono z klientem\n\tnumer: '") << (int) sClient << ";\n\tAdres: " << sSrv.Clients[sClient].GetAddress() << T("\n");
+	IF_DEBUG Console << T("\n >> Polaczono z klientem\n\tnumer: ") << (int) sClient << T("\n\tAdres: ") << sSrv.Clients[sClient].GetAddress() << T("\n");
+
+}
+
+void ServerCore::OnDisconnect(SOCKET sClient)
+{
+
+	IF_DEBUG Console << T("\n >> Rozlaczono Klienta\n\tnumer: ") << (int) sClient << T("\n");
 
 }
 
@@ -144,5 +154,79 @@ void ServerCore::OnRead(const ARA<char>& aData)
 {
 
 	IF_DEBUG Console << T("\n >> Odebrano wiadomosc: '") << aData.GetBegin() << T("'\n");
+
+}
+
+void ServerCore::Parse(const STR& sInput)
+{
+
+	// TODO V
+
+	// DEBUG VERSION
+
+	IF_DEBUG Console << T(" >> Parsuje dane\n\n\tWejscie: '") << sInput << T("'\n");
+
+	Containers::Strings sAction(sInput, T(' '));
+
+	STR sCommand = sAction[1];
+
+	IF_DEBUG Console << T("\tPolecenie: '") << sCommand << T("'\n");
+
+	sAction.Delete(1);
+
+	IF_DEBUG {
+
+		Console << T("\tparametry: '");
+
+		for (int i = 1; i <= sAction.Capacity(); i++){
+
+			Console << sAction[i];
+
+			if (i != sAction.Capacity()) Console << T(", ");
+
+		}
+
+		Console << T("'\n");
+
+	}
+
+	if (sCommand == T("rcon")) Interpret(CMD_RCON, sAction);
+
+	IF_DEBUG Console << T("\n << Parsowanie zakonczone\n");
+
+}
+
+void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams)
+{
+
+
+
+	switch (uCode){
+
+		case CMD_RCON:
+
+			IF_DEBUG {
+
+				Console << T("\n >> Interpretuje polecenie: CMD_RCON\n");
+
+				for (int i = 1; i <= sParams.Capacity(); i++) Console << T("\n\tParametr ") << i << T(": '") << sParams[i] << T("'");
+
+				Console << T("\n");
+
+			}
+
+			if (!sParams) return;
+
+			if (sParams[1] == T("listen")) Start();
+			if (sParams[1] == T("shutdown")) Stop();
+			if ((sParams[1] == T("quit")) || (sParams[1] == T("exit"))) ExitProcess(0);
+
+			if (sParams[1] == T("save")) if (sParams.Capacity() == 2) SaveSettings(sParams[2]); else SaveSettings();
+
+			if (sParams[1] == T("set")) if (sParams.Capacity() == 3) mSets[sParams[2]] = (int) sParams[3];
+
+		break;
+
+	}
 
 }

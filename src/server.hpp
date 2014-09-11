@@ -2,7 +2,7 @@
 
     FinallyHome Server "core" module header
 
-    copyright: KuszkiDevDroup
+    copyright: KuszkiDevGroup
 
     license: GNU GPL v2
 
@@ -18,6 +18,8 @@ Po dołączeniu go do projektu automatycznie dołączony zostanie też plik serv
 #define _FINALLYHOMESERVER_CORE_HPP
 
 #define IF_DEBUG if (bDebug) //!< Skrócone wywołanie konstrukcji warunkowej.
+
+#define CMD_RCON 1 //!< Identyfikator polecenia systemowego.
 
 using namespace KuszkAPI;
 
@@ -72,15 +74,10 @@ using namespace KuszkAPI;
          */ CON Console;
 
         /*! \brief Domyślny konstruktor klasy.
-         *  \param [in] bDbg Określa czy na wyjściu konsoli mają pojawiać się informacje o działaniu aplikacji zanim ta opcja zostanie wczytana z konfiguracji programu.
-         * 		    Wartości:
-         * 		    true - informacje będą wypisywane,
-         * 		    false - informacje nie będą wypisywane.
-         * 		    Domyślnie: false.
          *
          *  Dokonuje inicjacji mapy ServerCore::mVars tak, aby przechowywała ona wszystkie zmienne używane w projekcie.
          *
-         */ ServerCore(bool bDbg = false);
+         */ ServerCore(void);
 
         /*! \brief Destruktor.
          *
@@ -130,12 +127,36 @@ using namespace KuszkAPI;
          *
          */ void OnConnect(SOCKET sClient);
 
+        /*! \brief Zdarzenie wywoływane gdy nastąpi rozłączenie klienta.
+         *  \param [in] sClient Identyfikator gniazda klienta.
+         *
+         *  Zamyka gniazdo połączenia z klientem.
+         *
+         */ void OnDisconnect(SOCKET sClient);
+
         /*! \brief Zdarzenie wywoływane gdy serwer odbierze komunikat od klienta.
          *  \param [in] aData Odebrane dane.
          *
          *  Odbiera dane od klienta i przekazuje je do parsera.
          *
          */ void OnRead(const ARA<char>& aData);
+
+        /*! \brief Parsuje wejście z konsoli lub gniazda i przekazuje wynik parsingu do interpretera.
+         *  \param [in] sInput Wejście danych.
+         *  \warning Wersja tylko do debugowania, obecnie nie jest funkcjonalna.
+         *  \todo Całość kodu do napisania od podstaw.
+         *
+         *  Odbiera dane od klienta i przekazuje je do parsera.
+         *
+         */ void Parse(const STR& sInput);
+
+        /*! \brief Interpretuje dane przekazane przez parser.
+         *  \param [in] uCode Kod polecenia.
+         *  \param [in] sParams Parametry polecenia.
+         *
+         *  Wykonuje odpowiednie akcje na podstawie podanego polecenia i parametrów.
+         *
+         */ void Interpret(unsigned uCode, Containers::Strings& sParams);
 
 };
 

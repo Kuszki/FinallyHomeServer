@@ -2,7 +2,7 @@
 
     FinallyHome Server "core" main source
 
-    copyright: KuszkiDevDroup
+    copyright: KuszkiDevGroup
 
     license: GNU GPL v2
 
@@ -34,7 +34,7 @@ Dołącza automatycznie wszystkie zależności.
 
 using namespace KuszkAPI;
 
-ServerCore Server(true);
+ServerCore Eng;
 
 int WINAPI WinMain (HINSTANCE hThisInstance,
                     HINSTANCE hPrevInstance,
