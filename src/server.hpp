@@ -32,7 +32,7 @@ using namespace KuszkAPI;
 /*! \brief Klasa odpowiedzialna za funkcjonowanie aplikacji.
  *  \warning Klasa powinna być singletonem, nie zaimplementowano tego rozwiązania z oszczędności czasu. Nie zaleca się jednak wielokrotnego instancjowania tej klasy.
  *
- *  Zwalnia użyte zasoby.
+ *  Klasa zarządza serwerem aplikacji, organizuje zmienne używane w projekcie, obsługuje zdarzenia wywoływane przez klienta i wymienia istatne informacje z podłączonym do komputera sterownikiem.
  *
  */ class ServerCore
 {
