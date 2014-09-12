@@ -17,9 +17,13 @@ Po dołączeniu go do projektu automatycznie dołączony zostanie też plik serv
 #ifndef _FINALLYHOMESERVER_CORE_HPP
 #define _FINALLYHOMESERVER_CORE_HPP
 
-#define IF_DEBUG if (bDebug) //!< Skrócone wywołanie konstrukcji warunkowej.
+#define IF_DEBUG if (mSets[S T("debug")]) //!< Skrócone wywołanie konstrukcji warunkowej.
 
-#define CMD_RCON 1 //!< Identyfikator polecenia systemowego.
+#define CMD_UNKNOWN 0 //!< Identyfikator nieznanego polecenia.
+
+#define CMD_RCON 1 //!< Identyfikator polecenia "rcon".
+#define CMD_SET 2 //!< Identyfikator polecenia "set".
+#define CMD_GET 3 //!< Identyfikator polecenia "get".
 
 using namespace KuszkAPI;
 
@@ -59,11 +63,11 @@ using namespace KuszkAPI;
          *
          */ THR tThr;
 
-        /*! \brief Opcja debugowania.
+        /*! \brief Sekcje krytyczne.
          *
-         *  Włącza lub wyłącza komunikaty programu.
+         *  Odpowiada za synchronizowanie wszystkich wątków w aplikacji.
          *
-         */ bool bDebug;
+         */ SEC sSec;
 
     public:
 
@@ -74,16 +78,29 @@ using namespace KuszkAPI;
          */ CON Console;
 
         /*! \brief Domyślny konstruktor klasy.
+         *  \param [in] bDebug Włącza komunikaty debugowania.
          *
          *  Dokonuje inicjacji mapy ServerCore::mVars tak, aby przechowywała ona wszystkie zmienne używane w projekcie.
          *
-         */ ServerCore(void);
+         */ ServerCore(bool bDebug);
 
         /*! \brief Destruktor.
          *
          *  Zwalnia użyte zasoby.
          *
          */ ~ServerCore(void);
+
+        /*! \brief Początek synchronizacji wątku.
+         *
+         *  Wchodzi do sekcji krytycznej w celu synchronizacji wątków.
+         *
+         */ void EnterSection(void);
+
+        /*! \brief Koniec synchronizacji wątku.
+         *
+         *  Wychodzi z sekcji krytycznej.
+         *
+         */ void LeaveSection(void);
 
         /*! \brief Uruchamia usługę serwera.
          *  \return Powodzenie operacji.
@@ -134,29 +151,45 @@ using namespace KuszkAPI;
          *
          */ void OnDisconnect(SOCKET sClient);
 
+        /*! \brief Zdarzenie wywoływane gdy nastąpi zmiana wartości zmiennej projektu.
+         *  \param [in] sVar Nazwa zmiennej.
+         *  \param [in] iValue Nowa wartość zmiennej.
+         *  \todo Zaimplementować biblioteke zewnętrzną.
+         *
+         *  Metoda parsuje nazwę zmiennej, a następnie przekazuje jej identyfikator i nową wartość do odpowiedniej funkcji z biblioteki zewnętrznej.
+         *
+         */ void OnVarChange(const STR& sVar, int iValue);
+
         /*! \brief Zdarzenie wywoływane gdy serwer odbierze komunikat od klienta.
-         *  \param [in] aData Odebrane dane.
+         *  \tparam tnTerminal Rodzaj terminala.
+         *  \param [in] sMessage Odebrane dane.
+         *  \param [in, out] tTerminal Terminal na którym zostaną przeprowadzone operacje wejścia i wyjścia.
+         *  \warning Terminal musi posiadać przeciążony operator strumienia weyjścia.
          *
          *  Odbiera dane od klienta i przekazuje je do parsera.
          *
-         */ void OnRead(const ARA<char>& aData);
+         */ template<typename tnTerminal> void OnRead(const STR& sMessage, tnTerminal& tTerminal);
 
         /*! \brief Parsuje wejście z konsoli lub gniazda i przekazuje wynik parsingu do interpretera.
+         *  \tparam tnTerminal Rodzaj terminala.
          *  \param [in] sInput Wejście danych.
-         *  \warning Wersja tylko do debugowania, obecnie nie jest funkcjonalna.
-         *  \todo Całość kodu do napisania od podstaw.
+         *  \param [in, out] tTerminal Terminal na którym zostaną przeprowadzone operacje wejścia i wyjścia.
+         *  \warning Terminal musi posiadać przeciążony operator strumienia weyjścia.
          *
          *  Odbiera dane od klienta i przekazuje je do parsera.
          *
-         */ void Parse(const STR& sInput);
+         */ template<typename tnTerminal> void Parse(const STR& sInput, tnTerminal& tTerminal);
 
         /*! \brief Interpretuje dane przekazane przez parser.
+         *  \tparam tnTerminal Rodzaj terminala.
          *  \param [in] uCode Kod polecenia.
          *  \param [in] sParams Parametry polecenia.
+         *  \param [in, out] tTerminal Terminal na którym zostaną przeprowadzone operacje wejścia i wyjścia.
+         *  \warning Terminal musi posiadać przeciążony operator strumienia weyjścia.
          *
          *  Wykonuje odpowiednie akcje na podstawie podanego polecenia i parametrów.
          *
-         */ void Interpret(unsigned uCode, Containers::Strings& sParams);
+         */ template<typename tnTerminal> void Interpret(unsigned uCode, Containers::Strings& sParams, tnTerminal& tTerminal);
 
 };
 

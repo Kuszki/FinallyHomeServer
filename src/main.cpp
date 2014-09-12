@@ -34,7 +34,7 @@ Dołącza automatycznie wszystkie zależności.
 
 using namespace KuszkAPI;
 
-ServerCore Eng;
+ServerCore Eng(false);
 
 int WINAPI WinMain (HINSTANCE hThisInstance,
                     HINSTANCE hPrevInstance,

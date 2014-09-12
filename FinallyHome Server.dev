@@ -14,7 +14,7 @@ Folders=
 Major=1
 Minor=0
 Release=0
-Build=169
+Build=217
 LanguageID=1045
 CharsetID=1252
 CompanyName=KuszkiDevGroup
@@ -55,7 +55,7 @@ UseCustomMakefile=0
 CustomMakefile=
 IncludeVersionInfo=1
 SupportXPThemes=0
-CompilerSet=0
+CompilerSet=10
 CompilerType=0
 
 [Unit1]

@@ -18,21 +18,44 @@ extern ServerCore Eng;
 
 LRESULT ServerHandler(SRV* srv, UINT event, SOCKET id)
 {
+
      switch (event){
 
           case FD_ACCEPT:
+          {
                Eng.OnConnect(id);
+
+               char pcEcho[] = {255, 252, 1};
+               char pcBin[] = {255, 251, 0};
+
+               Eng.EnterSection();
+
+               srv->Clients[id].Send(ARA<char>(pcEcho, 3));
+               Sleep(10);
+               srv->Clients[id].Send(ARA<char>(pcBin, 3));
+
+               Eng.LeaveSection();
+		}
           break;
 
 		case FD_READ:
 		{
-			Containers::Array<char> aData;
+			STR sMessage;
 
-			srv->Clients[id].Recv(aData);
+			srv->Clients[id] >> sMessage;
 
-			aData.Add(0);
+			if (sMessage[1] == (char) 255) return 0;
 
-			Eng.OnRead(aData);
+			sMessage.Delete(T('\n'), true);
+			sMessage.Delete(T('\r'), true);
+
+			Eng.EnterSection();
+
+			if (sMessage) Eng.OnRead<CLI>(sMessage, srv->Clients[id]);
+
+			Eng.LeaveSection();
+
+			srv->Clients[id] << T("\n\r$: ");
 		}
 		break;
 
@@ -50,12 +73,15 @@ DWORD WINAPI ConsoleHandler(LPVOID pvArgs)
 
 	while (true){
 
-		Containers::String sTmp;
+		STR sMessage;
 
-		psSrv->Console << T("\n$: ") >> sTmp << T("\n");
+		psSrv->Console << T("\n$: ") >> sMessage << T("\n");
 
+		psSrv->EnterSection();
 
-		if (sTmp) psSrv->Parse(sTmp);
+		if (sMessage) psSrv->OnRead<CON>(sMessage, psSrv->Console);
+
+		psSrv->LeaveSection();
 
 	}
 
