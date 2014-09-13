@@ -123,18 +123,18 @@ using namespace KuszkAPI;
          */ bool Stop(void);
 
         /*! \brief Rozłącza wybranego klienta.
-         *  \param [in] pcClient Klient do odłączenia.
+         *  \param [in] cClient Klient do odłączenia.
          *
          *  Kończy połączenie z klientem na życzenie klienta.
          *
-         */ void Disconnect(CLI* pcClient);
+         */ void Disconnect(CLI& cClient);
 
         /*! \brief Wyłącza serwer.
-         *  \param [in] ptTerminal Terminal z którego odebrano polecenie.
+         *  \param [in] tTerminal Terminal z którego odebrano polecenie.
          *
          *  Kończy połączenia z klientami i wyłącza serwer.
          *
-         */ void Disconnect(CON* ptTerminal);
+         */ void Disconnect(CON& tTerminal);
 
         /*! \brief Wczytuje ustawienia z pliku ini.
          *  \param [in] sFile Nazwa pliku.

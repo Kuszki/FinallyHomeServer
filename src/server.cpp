@@ -44,6 +44,8 @@ ServerCore::ServerCore(bool bDebug)
 
      LoadSettings();
 
+     Start();
+
      tThr.Start(0, this);
 
      Sleep(100);
@@ -97,16 +99,18 @@ bool ServerCore::Stop(void)
 
 }
 
-void ServerCore::Disconnect(CLI* pcClient)
+void ServerCore::Disconnect(CLI& cClient)
 {
 
-	SOCKET sTmp = (SOCKET) *pcClient;
+	SOCKET sTmp = cClient;
 
 	sSrv.Disconnect(sTmp);
 
+	OnDisconnect(sTmp);
+
 }
 
-void ServerCore::Disconnect(CON* pcTerminal)
+void ServerCore::Disconnect(CON& cTerminal)
 {
 
 	Stop();
@@ -265,7 +269,7 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 			else if (sParams[1] == T("listen")) Start();
 			else if (sParams[1] == T("shutdown")) Stop();
-			else if ((sParams[1] == T("quit")) || (sParams[1] == T("exit"))) Disconnect(&tTerminal);
+			else if ((sParams[1] == T("quit")) || (sParams[1] == T("exit"))) Disconnect(tTerminal);
 
 			else if (sParams[1] == T("save")) {if (sParams.Capacity() == 2) SaveSettings(sParams[2]); else SaveSettings();}
 
@@ -293,7 +297,7 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 					tTerminal << S T("\r\nLista klientow:\r\n\r\n");
 
-					for (int i = 1; i <= sSrv.Clients.Capacity(); i++) tTerminal << S T("\t") << S i << S T(": ID: [") << S (int) sSrv.Clients[i].GetSocket() << S T("] @: [") << S sSrv.Clients[i].GetAddress() << S T("]\r\n");
+					for (int i = 1; i <= sSrv.Clients.Capacity(); i++) tTerminal << S T("\t") << S i << S T(": ID: [") << S (int) sSrv.Clients.GetDataByInt(i).GetSocket() << S T("] @: [") << S sSrv.Clients.GetDataByInt(i).GetAddress() << S T("]\r\n");
 
 					tTerminal << S T("\r\n");
 
@@ -346,21 +350,11 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 		break;
 
 		case CMD_BYE:
-		{
 
-			IF_DEBUG {
+			IF_DEBUG Console << T("\r\n >> Interpretuje polecenie: CMD_BYE\r\n");
 
-				Console << T("\r\n >> Interpretuje polecenie: CMD_BYE\r\n");
+			Disconnect(tTerminal);
 
-				for (int i = 1; i <= sParams.Capacity(); i++) Console << T("\r\n\tParametr ") << i << T(": '") << sParams[i] << T("'");
-
-				Console << T("\r\n");
-
-			}
-
-			Disconnect(&tTerminal);
-
-		}
 		break;
 
 		default: tTerminal << S T("Nieznane polecenie\r\n");
