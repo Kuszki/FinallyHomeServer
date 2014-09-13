@@ -97,6 +97,24 @@ bool ServerCore::Stop(void)
 
 }
 
+void ServerCore::Disconnect(CLI* pcClient)
+{
+
+	SOCKET sTmp = (SOCKET) *pcClient;
+
+	sSrv.Disconnect(sTmp);
+
+}
+
+void ServerCore::Disconnect(CON* pcTerminal)
+{
+
+	Stop();
+
+	ExitProcess(0);
+
+}
+
 void ServerCore::LoadSettings(const STR& sFile)
 {
 
@@ -184,13 +202,13 @@ template<typename tnTerminal>
 void ServerCore::Parse(const STR& sInput, tnTerminal& tTerminal)
 {
 
-	IF_DEBUG Console << T(" >> Parsuje dane\n\r\n\r\tWejscie: '") << sInput << T("'\n\r");
+	IF_DEBUG Console << T(" >> Parsuje dane\r\n\r\n\tWejscie: '") << sInput << T("'\r\n");
 
 	Containers::Strings sAction(sInput, T(' '));
 
 	STR sCommand = sAction[1];
 
-	IF_DEBUG Console << T("\tPolecenie: '") << sCommand << T("'\n\r");
+	IF_DEBUG Console << T("\tPolecenie: '") << sCommand << T("'\r\n");
 
 	sAction.Delete(1);
 
@@ -206,16 +224,22 @@ void ServerCore::Parse(const STR& sInput, tnTerminal& tTerminal)
 
 		}
 
-		Console << T("'\n\r");
+		Console << T("'\r\n");
 
 	}
 
-	if (sCommand == T("rcon")) Interpret<tnTerminal>(CMD_RCON, sAction, tTerminal);
-	else if (sCommand == T("set")) Interpret<tnTerminal>(CMD_SET, sAction, tTerminal);
-	else if (sCommand == T("get")) Interpret<tnTerminal>(CMD_GET, sAction, tTerminal);
-	else Interpret<tnTerminal>(CMD_UNKNOWN, sAction, tTerminal);
+	unsigned uCode = CMD_UNKNOWN;
 
-	IF_DEBUG Console << T("\n\r << Parsowanie zakonczone\n\r");
+	if (sCommand == T("rcon")) uCode = CMD_RCON;
+	else if (sCommand == T("set")) uCode = CMD_SET;
+	else if (sCommand == T("get")) uCode = CMD_GET;
+	else if (sCommand == T("bye")) uCode = CMD_BYE;
+
+	Interpret<tnTerminal>(uCode, sAction, tTerminal);
+
+	IF_DEBUG Console << T("\r\n << Parsowanie zakonczone\r\n");
+
+	if (uCode != CMD_BYE) tTerminal << PROMPT;
 
 }
 
@@ -229,11 +253,11 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 			IF_DEBUG {
 
-				Console << T("\n\r >> Interpretuje polecenie: CMD_RCON\n\r");
+				Console << T("\r\n >> Interpretuje polecenie: CMD_RCON\r\n");
 
-				for (int i = 1; i <= sParams.Capacity(); i++) Console << T("\n\r\tParametr ") << i << T(": '") << sParams[i] << T("'");
+				for (int i = 1; i <= sParams.Capacity(); i++) Console << T("\r\n\tParametr ") << i << T(": '") << sParams[i] << T("'");
 
-				Console << T("\n\r");
+				Console << T("\r\n");
 
 			}
 
@@ -241,12 +265,7 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 			else if (sParams[1] == T("listen")) Start();
 			else if (sParams[1] == T("shutdown")) Stop();
-			else if ((sParams[1] == T("quit")) || (sParams[1] == T("exit"))){
-
-				Stop();
-				ExitProcess(0);
-
-			}
+			else if ((sParams[1] == T("quit")) || (sParams[1] == T("exit"))) Disconnect(&tTerminal);
 
 			else if (sParams[1] == T("save")) {if (sParams.Capacity() == 2) SaveSettings(sParams[2]); else SaveSettings();}
 
@@ -258,25 +277,25 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 				if (sParams[2] == T("config")){
 
-					tTerminal << T("\n\rZmienne projektu:\n\r\n\r");
+					tTerminal << T("\r\nZmienne projektu:\r\n\r\n");
 
-					for (int i = 1; i <= mVars.Capacity(); i++) tTerminal << S T("\t") << S mVars.GetKey(i) << S T(" = ") << S mVars.GetDataByInt(i) << S T("\n\r");
+					for (int i = 1; i <= mVars.Capacity(); i++) tTerminal << S T("\t") << S mVars.GetKey(i) << S T(" = ") << S mVars.GetDataByInt(i) << S T("\r\n");
 
-					tTerminal << S T("\n\rZmienne programu:\n\r\n\r");
+					tTerminal << S T("\r\nZmienne programu:\r\n\r\n");
 
-					for (int i = 1; i <= mSets.Capacity(); i++) tTerminal << S T("\t") << S mSets.GetKey(i) << S T(" = ") << S mSets.GetDataByInt(i) << S T("\n\r");
+					for (int i = 1; i <= mSets.Capacity(); i++) tTerminal << S T("\t") << S mSets.GetKey(i) << S T(" = ") << S mSets.GetDataByInt(i) << S T("\r\n");
 
-					tTerminal << S T("\n\r");
+					tTerminal << S T("\r\n");
 
 				}
 
 				if (sParams[2] == T("clients")){
 
-					tTerminal << S T("\n\rLista klientow:\n\r\n\r");
+					tTerminal << S T("\r\nLista klientow:\r\n\r\n");
 
-					for (int i = 1; i <= sSrv.Clients.Capacity(); i++) tTerminal << S T("\t") << S i << S T(": ID: [") << S (int) sSrv.Clients[i].GetSocket() << S T("] @: [") << S sSrv.Clients[i].GetAddress() << S T("]\n\r");
+					for (int i = 1; i <= sSrv.Clients.Capacity(); i++) tTerminal << S T("\t") << S i << S T(": ID: [") << S (int) sSrv.Clients[i].GetSocket() << S T("] @: [") << S sSrv.Clients[i].GetAddress() << S T("]\r\n");
 
-					tTerminal << S T("\n\r");
+					tTerminal << S T("\r\n");
 
 				}
 
@@ -290,11 +309,11 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 			IF_DEBUG {
 
-				Console << T("\n\r >> Interpretuje polecenie: CMD_SET\n\r");
+				Console << T("\r\n >> Interpretuje polecenie: CMD_SET\r\n");
 
-				for (int i = 1; i <= sParams.Capacity(); i++) Console << T("\n\r\tParametr ") << i << T(": '") << sParams[i] << T("'");
+				for (int i = 1; i <= sParams.Capacity(); i++) Console << T("\r\n\tParametr ") << i << T(": '") << sParams[i] << T("'");
 
-				Console << T("\n\r");
+				Console << T("\r\n");
 
 			}
 
@@ -310,23 +329,41 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 			IF_DEBUG {
 
-				Console << T("\n\r >> Interpretuje polecenie: CMD_GET\n\r");
+				Console << T("\r\n >> Interpretuje polecenie: CMD_GET\r\n");
 
-				for (int i = 1; i <= sParams.Capacity(); i++) Console << T("\n\r\tParametr ") << i << T(": '") << sParams[i] << T("'");
+				for (int i = 1; i <= sParams.Capacity(); i++) Console << T("\r\n\tParametr ") << i << T(": '") << sParams[i] << T("'");
 
-				Console << T("\n\r");
+				Console << T("\r\n");
 
 			}
 
 			if (!sParams) return;
 
-			else if (mVars.Contain(sParams[1])) tTerminal << S T("set ") << sParams[1] << S T(" ") << S mVars[sParams[1]] << S T("\n\r");
+			else if (mVars.Contain(sParams[1])) tTerminal << S T("set ") << sParams[1] << S T(" ") << S mVars[sParams[1]] << S T("\r\n");
 
 			else tTerminal << S T("Niezdefiniowana zmienna\n\t");
 
 		break;
 
-		default: tTerminal << S T("Nieznane polecenie\n\r");
+		case CMD_BYE:
+		{
+
+			IF_DEBUG {
+
+				Console << T("\r\n >> Interpretuje polecenie: CMD_BYE\r\n");
+
+				for (int i = 1; i <= sParams.Capacity(); i++) Console << T("\r\n\tParametr ") << i << T(": '") << sParams[i] << T("'");
+
+				Console << T("\r\n");
+
+			}
+
+			Disconnect(&tTerminal);
+
+		}
+		break;
+
+		default: tTerminal << S T("Nieznane polecenie\r\n");
 
 	}
 

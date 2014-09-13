@@ -25,6 +25,8 @@ Po dołączeniu go do projektu automatycznie dołączony zostanie też plik serv
 #define CMD_SET 2 //!< Identyfikator polecenia "set".
 #define CMD_GET 3 //!< Identyfikator polecenia "get".
 
+#define CMD_BYE 10 //!< Identyfikator polecenia "bye".
+
 using namespace KuszkAPI;
 
 // ----- CLASS DECLARATION -----
@@ -119,6 +121,20 @@ using namespace KuszkAPI;
          *  Kończy działanie serwera i zamyka wszystkie połączenia.
          *
          */ bool Stop(void);
+
+        /*! \brief Rozłącza wybranego klienta.
+         *  \param [in] pcClient Klient do odłączenia.
+         *
+         *  Kończy połączenie z klientem na życzenie klienta.
+         *
+         */ void Disconnect(CLI* pcClient);
+
+        /*! \brief Wyłącza serwer.
+         *  \param [in] ptTerminal Terminal z którego odebrano polecenie.
+         *
+         *  Kończy połączenia z klientami i wyłącza serwer.
+         *
+         */ void Disconnect(CON* ptTerminal);
 
         /*! \brief Wczytuje ustawienia z pliku ini.
          *  \param [in] sFile Nazwa pliku.

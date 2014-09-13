@@ -26,6 +26,8 @@ Dołącza automatycznie wszystkie zależności.
 
 #include "..\..\KuszkAPI\KuszkAPI.hpp"
 
+#define PROMPT T("\r\n$: ")
+
 #include "callbacks.hpp"
 #include "server.hpp"
 

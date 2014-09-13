@@ -16,6 +16,8 @@ Plik jest dołączany przez callbacks.hpp.
 
 extern ServerCore Eng;
 
+STR sBuffer;
+
 LRESULT ServerHandler(SRV* srv, UINT event, SOCKET id)
 {
 
@@ -33,6 +35,8 @@ LRESULT ServerHandler(SRV* srv, UINT event, SOCKET id)
                srv->Clients[id].Send(ARA<char>(pcEcho, 3));
                Sleep(10);
                srv->Clients[id].Send(ARA<char>(pcBin, 3));
+               Sleep(10);
+               srv->Clients[id] << PROMPT;
 
                Eng.LeaveSection();
 		}
@@ -44,18 +48,37 @@ LRESULT ServerHandler(SRV* srv, UINT event, SOCKET id)
 
 			srv->Clients[id] >> sMessage;
 
-			if (sMessage[1] == (char) 255) return 0;
+			if (sMessage[1] == (char) 255){
 
-			sMessage.Delete(T('\n'), true);
-			sMessage.Delete(T('\r'), true);
+				// DEBUG!
+
+				Eng.Console << T("\nTELNET MESSAGE: ");
+
+				for (int i = 1; i <=3; i++) Eng.Console << T("[") << (unsigned char) sMessage[i] << T("]");
+
+				Eng.Console << T(" EOM;\n");
+
+				return 0;
+
+			}
+
+			sBuffer += sMessage;
 
 			Eng.EnterSection();
 
-			if (sMessage) Eng.OnRead<CLI>(sMessage, srv->Clients[id]);
+			if (sBuffer[0] == T('\n')){
+
+				sBuffer.Delete(T('\n'), true);
+				sBuffer.Delete(T('\r'), true);
+
+				if (sBuffer) Eng.OnRead<CLI>(sBuffer, srv->Clients[id]); else srv->Clients[id] << PROMPT;
+
+				sBuffer.Clean();
+
+			}
 
 			Eng.LeaveSection();
 
-			srv->Clients[id] << T("\n\r$: ");
 		}
 		break;
 
@@ -71,15 +94,17 @@ DWORD WINAPI ConsoleHandler(LPVOID pvArgs)
 {
 	ServerCore* psSrv = (ServerCore*) pvArgs;
 
+	psSrv->Console << T("\n$:");
+
 	while (true){
 
 		STR sMessage;
 
-		psSrv->Console << T("\n$: ") >> sMessage << T("\n");
+		psSrv->Console >> sMessage;
 
 		psSrv->EnterSection();
 
-		if (sMessage) psSrv->OnRead<CON>(sMessage, psSrv->Console);
+		if (sMessage) psSrv->OnRead<CON>(sMessage, psSrv->Console); else psSrv->Console << PROMPT;
 
 		psSrv->LeaveSection();
 
