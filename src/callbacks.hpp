@@ -25,7 +25,7 @@ Po dołączeniu go do projektu automatycznie dołączony zostanie też plik call
  *
  *  Obsługuje dodatkowe zdarzenia przy połączeniu, odbieraniu informacji i zakończaniu połączenia.
  *
- */ LRESULT ServerHandler(SRV* srv, UINT event, SOCKET socket);
+ */ LRESULT ServerHandler(SRV& srv, UINT event, SOCKET socket);
 
 /*! \brief Funkcja wątku konsoli.
  *  \param [in] pvArgs Wskaźnik na dodatkowe parametry.

@@ -104,9 +104,9 @@ void ServerCore::Disconnect(CLI& cClient)
 
 	SOCKET sTmp = cClient;
 
-	sSrv.Disconnect(sTmp);
-
 	OnDisconnect(sTmp);
+
+	sSrv.Disconnect(sTmp);
 
 }
 
@@ -174,7 +174,7 @@ void ServerCore::SaveSettings(const STR& sFile)
 void ServerCore::OnConnect(SOCKET sClient)
 {
 
-	Console << T("\n >> Polaczono z klientem\n\tID: ") << (int) sClient << T("\n\tAdres: ") << sSrv.Clients[sClient].GetAddress() << T("\n");
+	Console << T("\n >> Polaczono z klientem\n\tID: ") << (int) sClient << T("\n\tAdres: ") << sSrv[sClient].GetAddress() << T("\n");
 
 }
 
@@ -297,7 +297,7 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 					tTerminal << S T("\r\nLista klientow:\r\n\r\n");
 
-					for (int i = 1; i <= sSrv.Clients.Capacity(); i++) tTerminal << S T("\t") << S i << S T(": ID: [") << S (int) sSrv.Clients.GetDataByInt(i).GetSocket() << S T("] @: [") << S sSrv.Clients.GetDataByInt(i).GetAddress() << S T("]\r\n");
+					for (int i = 1; i <= sSrv.Capacity(); i++) tTerminal << S T("\t") << S i << S T(": ID: [") << S (int) sSrv.GetClient(i).GetSocket() << S T("] @: [") << S sSrv.GetClient(i).GetAddress() << S T("]\r\n");
 
 					tTerminal << S T("\r\n");
 

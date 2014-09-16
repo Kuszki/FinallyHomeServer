@@ -1,7 +1,7 @@
 # Project: FinallyHome Server
 # Compiler: GCC GUI
 # Compiler Type: MingW 3
-# Makefile created by wxDev-C++ IDE 7.4.2.569 on 13-09-14 22:48
+# Makefile created by wxDev-C++ IDE 7.4.2.569 on 16-09-14 22:28
 
 WXLIBNAME = wxmsw29u
 CPP       = g++.exe
@@ -9,14 +9,14 @@ CC        = gcc.exe
 WINDRES   = "windres.exe"
 OBJ       = obj/main.o obj/FinallyHome_Server_private.res
 LINKOBJ   = "obj/main.o" obj/FinallyHome_Server_private.res
-LIBS      = -L"C:/Programy/Dev-Cpp" -lgdi32 -lcomctl32 -lwsock32 -mwindows -mwindows  -msse2 
+LIBS      = -L"C:/Programy/Dev-Cpp" -lgdi32 -lcomctl32 -lwsock32 -mwindows -mwindows  -g3 -msse2 
 INCS      = -I"C:/Programy/Dev-Cpp/include" -I"C:/Programy/Dev-Cpp/include/common" -I"C:/Programy/Dev-Cpp/include/common/wx"
 CXXINCS   = -I"C:/Programy/Dev-Cpp/include"
 RCINCS    = --include-dir "C:/Programy/Dev-Cpp/include/common"
 BIN       = bin/Server.exe
 DEFINES   = 
-CXXFLAGS  = $(CXXINCS) $(DEFINES)   -fexpensive-optimizations -O3 -msse2
-CFLAGS    = $(INCS) $(DEFINES)   -fexpensive-optimizations -O3 -msse2
+CXXFLAGS  = $(CXXINCS) $(DEFINES)   -fexpensive-optimizations -O3 -g3 -msse2
+CFLAGS    = $(INCS) $(DEFINES)   -fexpensive-optimizations -O3 -g3 -msse2
 GPROF     = gprof.exe
 ifeq ($(OS),Windows_NT)
    RM = del /Q

@@ -16,9 +16,9 @@ Plik jest dołączany przez callbacks.hpp.
 
 extern ServerCore Eng;
 
-STR sBuffer;
+MAP<STR, SOCKET> mBuffer;
 
-LRESULT ServerHandler(SRV* srv, UINT event, SOCKET id)
+LRESULT ServerHandler(SRV& srv, UINT event, SOCKET id)
 {
 
      switch (event){
@@ -32,11 +32,13 @@ LRESULT ServerHandler(SRV* srv, UINT event, SOCKET id)
 
                Eng.EnterSection();
 
-               srv->Clients[id].Send(ARA<char>(pcEcho, 3));
+               srv[id].Send(ARA<char>(pcEcho, 3));
                Sleep(10);
-               srv->Clients[id].Send(ARA<char>(pcBin, 3));
+               srv[id].Send(ARA<char>(pcBin, 3));
                Sleep(10);
-               srv->Clients[id] << PROMPT;
+               srv[id] << PROMPT;
+
+               mBuffer.Add("", id);
 
                Eng.LeaveSection();
 		}
@@ -46,7 +48,7 @@ LRESULT ServerHandler(SRV* srv, UINT event, SOCKET id)
 		{
 			STR sMessage;
 
-			srv->Clients[id] >> sMessage;
+			srv[id] >> sMessage;
 
 			if (sMessage[1] == (char) 255){
 
@@ -62,18 +64,18 @@ LRESULT ServerHandler(SRV* srv, UINT event, SOCKET id)
 
 			}
 
-			sBuffer += sMessage;
+			mBuffer[id] += sMessage;
 
 			Eng.EnterSection();
 
-			if (sBuffer[0] == T('\n')){
+			if (mBuffer[id][0] == T('\n')){
 
-				sBuffer.Delete(T('\n'), true);
-				sBuffer.Delete(T('\r'), true);
+				mBuffer[id].Delete(T('\n'), true);
+				mBuffer[id].Delete(T('\r'), true);
 
-				if (sBuffer) Eng.OnRead<CLI>(sBuffer, srv->Clients[id]); else srv->Clients[id] << PROMPT;
+				if (mBuffer[id]) Eng.OnRead<CLI>(mBuffer[id], srv[id]); else srv[id] << PROMPT;
 
-				sBuffer.Clean();
+				mBuffer[id].Clean();
 
 			}
 
@@ -84,6 +86,8 @@ LRESULT ServerHandler(SRV* srv, UINT event, SOCKET id)
 
 		case FD_CLOSE:
 			Eng.OnDisconnect(id);
+
+			mBuffer.Delete(id);
 		break;
 	}
 
