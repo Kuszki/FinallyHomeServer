@@ -99,18 +99,16 @@ bool ServerCore::Stop(void)
 
 }
 
-void ServerCore::Disconnect(CLI& cClient)
+void ServerCore::Disconnect(SOCKET sClient)
 {
 
-	SOCKET sTmp = cClient;
+	OnDisconnect(sClient);
 
-	OnDisconnect(sTmp);
-
-	sSrv.Disconnect(sTmp);
+	sSrv.Disconnect(sClient);
 
 }
 
-void ServerCore::Disconnect(CON& cTerminal)
+void ServerCore::Shutdown(void)
 {
 
 	Stop();
@@ -192,18 +190,28 @@ void ServerCore::OnVarChange(const STR& sVar, int iValue)
 
 }
 
-template<typename tnTerminal>
-void ServerCore::OnRead(const STR& sMessage, tnTerminal& tTerminal)
+void ServerCore::OnRead(const STR& sMessage, SOCKET sClient)
 {
+
+	STR sBuffer;
 
 	IF_DEBUG Console << T("\n >> Odebrano wiadomosc: '") << sMessage << T("'\n");
 
-	Parse<tnTerminal>(sMessage, tTerminal);
+	unsigned uAction = Parse<STR>(sMessage, sBuffer);
+
+	sBuffer << PROMPT;
+
+	if (sClient){
+
+		if (uAction != CMD_BYE) sSrv[sClient] << sBuffer;
+		else Disconnect(sClient);
+
+	} else Console << sBuffer;
 
 }
 
 template<typename tnTerminal>
-void ServerCore::Parse(const STR& sInput, tnTerminal& tTerminal)
+unsigned ServerCore::Parse(const STR& sInput, tnTerminal& tTerminal)
 {
 
 	IF_DEBUG Console << T(" >> Parsuje dane\r\n\r\n\tWejscie: '") << sInput << T("'\r\n");
@@ -243,7 +251,7 @@ void ServerCore::Parse(const STR& sInput, tnTerminal& tTerminal)
 
 	IF_DEBUG Console << T("\r\n << Parsowanie zakonczone\r\n");
 
-	if (uCode != CMD_BYE) tTerminal << PROMPT;
+	return uCode;
 
 }
 
@@ -269,7 +277,7 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 			else if (sParams[1] == T("listen")) Start();
 			else if (sParams[1] == T("shutdown")) Stop();
-			else if ((sParams[1] == T("quit")) || (sParams[1] == T("exit"))) Disconnect(tTerminal);
+			else if ((sParams[1] == T("quit")) || (sParams[1] == T("exit"))) Shutdown();
 
 			else if (sParams[1] == T("save")) {if (sParams.Capacity() == 2) SaveSettings(sParams[2]); else SaveSettings();}
 
@@ -295,17 +303,21 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 				if (sParams[2] == T("clients")){
 
-					tTerminal << S T("\r\nLista klientow:\r\n\r\n");
+					if (sSrv.Capacity()){
 
-					for (int i = 1; i <= sSrv.Capacity(); i++) tTerminal << S T("\t") << S i << S T(": ID: [") << S (int) sSrv.GetClient(i).GetSocket() << S T("] @: [") << S sSrv.GetClient(i).GetAddress() << S T("]\r\n");
+						tTerminal << S T("\r\n >> Lista klientow:\r\n\r\n");
 
-					tTerminal << S T("\r\n");
+						for (int i = 1; i <= sSrv.Capacity(); i++) tTerminal << S T("\t") << S i << S T(": ID: [") << S (int) sSrv.GetClient(i).GetSocket() << S T("] @: [") << S sSrv.GetClient(i).GetAddress() << S T("]\r\n");
+
+						tTerminal << S T("\r\n");
+
+					} else tTerminal << T("\r\n >> Brak polaczonych klientow\r\n");
 
 				}
 
 			}
 
-			else tTerminal << S T("Nieznane parametry polecenia lub nieprawidlowa liczba parametrow\n\t");
+			else tTerminal << S T(" >> Nieznane parametry polecenia lub nieprawidlowa liczba parametrow\n\t");
 
 		break;
 
@@ -325,7 +337,7 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 			else if (sParams.Capacity() == 2 && mVars.Contain(sParams[1])) mVars[sParams[1]] = (int) sParams[2];
 
-			else tTerminal << S T("Nieprawidlowa liczba parametrow lub niezdefiniowana zmienna\n\t");
+			else tTerminal << S T(" >> Nieprawidlowa liczba parametrow lub niezdefiniowana zmienna\n\t");
 
 		break;
 
@@ -345,19 +357,11 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 			else if (mVars.Contain(sParams[1])) tTerminal << S T("set ") << sParams[1] << S T(" ") << S mVars[sParams[1]] << S T("\r\n");
 
-			else tTerminal << S T("Niezdefiniowana zmienna\n\t");
+			else tTerminal << S T(" >> Niezdefiniowana zmienna\n\t");
 
 		break;
 
-		case CMD_BYE:
-
-			IF_DEBUG Console << T("\r\n >> Interpretuje polecenie: CMD_BYE\r\n");
-
-			Disconnect(tTerminal);
-
-		break;
-
-		default: tTerminal << S T("Nieznane polecenie\r\n");
+		default: tTerminal << S T(" >> Nieznane polecenie\r\n");
 
 	}
 

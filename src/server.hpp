@@ -123,18 +123,17 @@ using namespace KuszkAPI;
          */ bool Stop(void);
 
         /*! \brief Rozłącza wybranego klienta.
-         *  \param [in] cClient Klient do odłączenia.
+         *  \param [in] sClient ID klienta do odłączenia.
          *
          *  Kończy połączenie z klientem na życzenie klienta.
          *
-         */ void Disconnect(CLI& cClient);
+         */ void Disconnect(SOCKET sClient);
 
         /*! \brief Wyłącza serwer.
-         *  \param [in] tTerminal Terminal z którego odebrano polecenie.
          *
          *  Kończy połączenia z klientami i wyłącza serwer.
          *
-         */ void Disconnect(CON& tTerminal);
+         */ void Shutdown(void);
 
         /*! \brief Wczytuje ustawienia z pliku ini.
          *  \param [in] sFile Nazwa pliku.
@@ -177,24 +176,23 @@ using namespace KuszkAPI;
          */ void OnVarChange(const STR& sVar, int iValue);
 
         /*! \brief Zdarzenie wywoływane gdy serwer odbierze komunikat od klienta.
-         *  \tparam tnTerminal Rodzaj terminala.
          *  \param [in] sMessage Odebrane dane.
-         *  \param [in, out] tTerminal Terminal na którym zostaną przeprowadzone operacje wejścia i wyjścia.
-         *  \warning Terminal musi posiadać przeciążony operator strumienia weyjścia.
+         *  \param [in, out] sClient Identyfikator klienta, który wywołał zdarzenie lub 0 gdy zostało one wywołane lokalnie.
          *
          *  Odbiera dane od klienta i przekazuje je do parsera.
          *
-         */ template<typename tnTerminal> void OnRead(const STR& sMessage, tnTerminal& tTerminal);
+         */ void OnRead(const STR& sMessage, SOCKET sClient = 0);
 
         /*! \brief Parsuje wejście z konsoli lub gniazda i przekazuje wynik parsingu do interpretera.
          *  \tparam tnTerminal Rodzaj terminala.
          *  \param [in] sInput Wejście danych.
          *  \param [in, out] tTerminal Terminal na którym zostaną przeprowadzone operacje wejścia i wyjścia.
-         *  \warning Terminal musi posiadać przeciążony operator strumienia weyjścia.
+         *  \return Kod polecenia.
+         *  \warning Terminal musi posiadać przeciążony operator strumienia wejścia.
          *
          *  Odbiera dane od klienta i przekazuje je do parsera.
          *
-         */ template<typename tnTerminal> void Parse(const STR& sInput, tnTerminal& tTerminal);
+         */ template<typename tnTerminal> unsigned Parse(const STR& sInput, tnTerminal& tTerminal);
 
         /*! \brief Interpretuje dane przekazane przez parser.
          *  \tparam tnTerminal Rodzaj terminala.

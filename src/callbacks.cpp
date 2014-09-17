@@ -73,7 +73,7 @@ LRESULT ServerHandler(SRV& srv, UINT event, SOCKET id)
 				mBuffer[id].Delete(T('\n'), true);
 				mBuffer[id].Delete(T('\r'), true);
 
-				if (mBuffer[id]) Eng.OnRead<CLI>(mBuffer[id], srv[id]); else srv[id] << PROMPT;
+				if (mBuffer[id]) Eng.OnRead(mBuffer[id], srv[id]); else srv[id] << PROMPT;
 
 				mBuffer[id].Clean();
 
@@ -98,7 +98,7 @@ DWORD WINAPI ConsoleHandler(LPVOID pvArgs)
 {
 	ServerCore* psSrv = (ServerCore*) pvArgs;
 
-	psSrv->Console << T("\n$:");
+	psSrv->Console << PROMPT;
 
 	while (true){
 
@@ -108,7 +108,7 @@ DWORD WINAPI ConsoleHandler(LPVOID pvArgs)
 
 		psSrv->EnterSection();
 
-		if (sMessage) psSrv->OnRead<CON>(sMessage, psSrv->Console); else psSrv->Console << PROMPT;
+		if (sMessage) psSrv->OnRead(sMessage); else psSrv->Console << PROMPT;
 
 		psSrv->LeaveSection();
 

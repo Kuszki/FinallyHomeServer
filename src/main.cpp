@@ -36,7 +36,7 @@ Dołącza automatycznie wszystkie zależności.
 
 using namespace KuszkAPI;
 
-ServerCore Eng(false);
+ServerCore Eng(true);
 
 int WINAPI WinMain (HINSTANCE hThisInstance,
                     HINSTANCE hPrevInstance,
@@ -46,17 +46,18 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
 {
     MSG mMsg;
     
+    /*
     TCHAR* pcBufor = new TCHAR[MAX_PATH];
     unsigned uTmp = GetPrivateProfileString(NULL, NULL, NULL, pcBufor, MAX_PATH, "c:/config.ini");
-    
-    Containers::Vector<char>::Change(pcBufor, uTmp, 0, 10, true);
-    
-    pcBufor[uTmp - 1] = 0;
-    
-    STR err((unsigned)GetLastError());
-    
-    MessageBox(NULL, pcBufor, err.Str(), 0);
 
+    Containers::Vector<char>::Change(pcBufor, uTmp, 0, 10, true);
+
+    pcBufor[uTmp - 1] = 0;
+
+    STR err((unsigned)GetLastError());
+
+    MessageBox(NULL, pcBufor, err.Str(), 0);
+	*/
     while (GetMessage(&mMsg, NULL, 0, 0)){
         TranslateMessage(&mMsg);
         DispatchMessage(&mMsg);
