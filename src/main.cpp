@@ -28,6 +28,10 @@ Dołącza automatycznie wszystkie zależności.
 
 #define PROMPT T("\r\n$: ")
 
+#define SOCK_SECTION 1
+#define CONS_SECTION 2
+#define CORE_SECTION 3
+
 #include "callbacks.hpp"
 #include "server.hpp"
 
@@ -45,7 +49,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
 
 {
     MSG mMsg;
-    
+
     /*
     TCHAR* pcBufor = new TCHAR[MAX_PATH];
     unsigned uTmp = GetPrivateProfileString(NULL, NULL, NULL, pcBufor, MAX_PATH, "c:/config.ini");

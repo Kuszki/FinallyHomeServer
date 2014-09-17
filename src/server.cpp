@@ -40,7 +40,10 @@ ServerCore::ServerCore(bool bDebug)
 	Console << T("[OK]\n");
 
 	tThr.Add(0, ConsoleHandler);
-	sSec.Add(0);
+
+	sSec.Add(CORE_SECTION);
+	sSec.Add(CONS_SECTION);
+	sSec.Add(SOCK_SECTION);
 
      LoadSettings();
 
@@ -59,17 +62,17 @@ ServerCore::~ServerCore(void)
 
 }
 
-void ServerCore::EnterSection(void)
+void ServerCore::EnterSection(unsigned uSection)
 {
 
-	sSec.Enter(0);
+	sSec.Enter(uSection);
 
 }
 
-void ServerCore::LeaveSection(void)
+void ServerCore::LeaveSection(unsigned uSection)
 {
 
-	sSec.Leave(0);
+	sSec.Leave(uSection);
 
 }
 
@@ -91,7 +94,11 @@ bool ServerCore::Stop(void)
 
 	Console << T("\n >> Wylaczam serwer...\t");
 
+	EnterSection(CORE_SECTION);
+
 	sSrv.Shutdown();
+
+	LeaveSection(CORE_SECTION);
 
 	Console << T("[OK]\n");
 

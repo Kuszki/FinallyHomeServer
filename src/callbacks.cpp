@@ -30,7 +30,7 @@ LRESULT ServerHandler(SRV& srv, UINT event, SOCKET id)
                char pcEcho[] = {255, 252, 1};
                char pcBin[] = {255, 251, 0};
 
-               Eng.EnterSection();
+               Eng.EnterSection(SOCK_SECTION);
 
                srv[id].Send(ARA<char>(pcEcho, 3));
                Sleep(10);
@@ -40,7 +40,7 @@ LRESULT ServerHandler(SRV& srv, UINT event, SOCKET id)
 
                mBuffer.Add("", id);
 
-               Eng.LeaveSection();
+               Eng.LeaveSection(SOCK_SECTION);
 		}
           break;
 
@@ -66,7 +66,7 @@ LRESULT ServerHandler(SRV& srv, UINT event, SOCKET id)
 
 			mBuffer[id] += sMessage;
 
-			Eng.EnterSection();
+			Eng.EnterSection(SOCK_SECTION);
 
 			if (mBuffer[id][0] == T('\n')){
 
@@ -79,7 +79,7 @@ LRESULT ServerHandler(SRV& srv, UINT event, SOCKET id)
 
 			}
 
-			Eng.LeaveSection();
+			Eng.LeaveSection(SOCK_SECTION);
 
 		}
 		break;
@@ -106,11 +106,11 @@ DWORD WINAPI ConsoleHandler(LPVOID pvArgs)
 
 		psSrv->Console >> sMessage;
 
-		psSrv->EnterSection();
+		psSrv->EnterSection(CONS_SECTION);
 
 		if (sMessage) psSrv->OnRead(sMessage); else psSrv->Console << PROMPT;
 
-		psSrv->LeaveSection();
+		psSrv->LeaveSection(CONS_SECTION);
 
 	}
 

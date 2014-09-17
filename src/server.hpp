@@ -93,16 +93,18 @@ using namespace KuszkAPI;
          */ ~ServerCore(void);
 
         /*! \brief Początek synchronizacji wątku.
+         *  \param [in] uSection Numer sekcji do wejścia.
          *
          *  Wchodzi do sekcji krytycznej w celu synchronizacji wątków.
          *
-         */ void EnterSection(void);
+         */ void EnterSection(unsigned uSection);
 
         /*! \brief Koniec synchronizacji wątku.
+         *  \param [in] uSection Numer sekcji do wyjścia.
          *
          *  Wychodzi z sekcji krytycznej.
          *
-         */ void LeaveSection(void);
+         */ void LeaveSection(unsigned uSection);
 
         /*! \brief Uruchamia usługę serwera.
          *  \return Powodzenie operacji.
