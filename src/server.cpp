@@ -362,9 +362,11 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 			if (!sParams) return;
 
+			else if (sParams[1] == T("*")) for (int i = 1; i <= mVars.Capacity(); i++) tTerminal << S T("set ") << mVars.GetKey(i) << S T(" ") << S mVars.GetDataByInt(i) << S T("\r\n");
+
 			else if (mVars.Contain(sParams[1])) tTerminal << S T("set ") << sParams[1] << S T(" ") << S mVars[sParams[1]] << S T("\r\n");
 
-			else tTerminal << S T(" >> Niezdefiniowana zmienna\n\t");
+			else tTerminal << S T(" >> Niezdefiniowana zmienna\r\n");
 
 		break;
 

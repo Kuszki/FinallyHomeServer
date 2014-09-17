@@ -43,16 +43,16 @@ using namespace KuszkAPI;
 ServerCore Eng(true);
 
 int WINAPI WinMain (HINSTANCE hThisInstance,
-                    HINSTANCE hPrevInstance,
-                    LPSTR lpszArgument,
-                    int nFunsterStil)
+               HINSTANCE hPrevInstance,
+               LPSTR lpszArgument,
+               int nFunsterStil)
 
 {
     MSG mMsg;
 
     while (GetMessage(&mMsg, NULL, 0, 0)){
-        TranslateMessage(&mMsg);
-        DispatchMessage(&mMsg);
+       TranslateMessage(&mMsg);
+       DispatchMessage(&mMsg);
     }
 
     return mMsg.wParam;
