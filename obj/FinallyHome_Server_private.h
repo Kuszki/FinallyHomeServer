@@ -7,11 +7,11 @@
 #define FINALLYHOME_SERVER_PRIVATE_H
 
 /* VERSION DEFINITIONS */
-#define VER_STRING	"1.0.0.342"
+#define VER_STRING	"1.0.0.345"
 #define VER_MAJOR	1
 #define VER_MINOR	0
 #define VER_RELEASE	0
-#define VER_BUILD	342
+#define VER_BUILD	345
 #define COMPANY_NAME	"KuszkiDevGroup"
 #define FILE_VERSION	""
 #define FILE_DESCRIPTION	"FinallyHome inteligent home server"

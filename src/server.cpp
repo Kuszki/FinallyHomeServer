@@ -203,31 +203,11 @@ template<typename tnTerminal>
 unsigned ServerCore::Parse(const STR& sInput, tnTerminal& tTerminal)
 {
 
-	IF_DEBUG Console << T(" >> Parsuje dane\r\n\r\n\tWejscie: '") << sInput << T("'\r\n");
-
 	Containers::Strings sAction(sInput, T(' '));
 
 	STR sCommand = sAction[1];
 
-	IF_DEBUG Console << T("\tPolecenie: '") << sCommand << T("'\r\n");
-
 	sAction.Delete(1);
-
-	IF_DEBUG {
-
-		Console << T("\tParametry: '");
-
-		for (int i = 1; i <= sAction.Capacity(); i++){
-
-			Console << sAction[i];
-
-			if (i != sAction.Capacity()) Console << T(", ");
-
-		}
-
-		Console << T("'\r\n");
-
-	}
 
 	unsigned uCode = CMD_UNKNOWN;
 
@@ -235,6 +215,16 @@ unsigned ServerCore::Parse(const STR& sInput, tnTerminal& tTerminal)
 	else if (sCommand == T("set")) uCode = CMD_SET;
 	else if (sCommand == T("get")) uCode = CMD_GET;
 	else if (sCommand == T("bye")) uCode = CMD_BYE;
+
+	IF_DEBUG {
+
+		Console << T("\r\n >> Interpretuje polecenie: ") << sCommand << T("\r\n");
+
+		for (int i = 1; i <= sAction.Capacity(); i++) Console << T("\r\n\tParametr ") << i << T(": '") << sAction[i] << T("'");
+
+		Console << T("\r\n");
+
+	}
 
 	Interpret<tnTerminal>(uCode, sAction, tTerminal);
 
@@ -252,16 +242,6 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 		case CMD_RCON:
 
-			IF_DEBUG {
-
-				Console << T("\r\n >> Interpretuje polecenie: CMD_RCON\r\n");
-
-				for (int i = 1; i <= sParams.Capacity(); i++) Console << T("\r\n\tParametr ") << i << T(": '") << sParams[i] << T("'");
-
-				Console << T("\r\n");
-
-			}
-
 			if (!sParams) return;
 
 			else if (sParams[1] == T("listen")) Start();
@@ -271,6 +251,8 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 			else if (sParams[1] == T("save")) {if (sParams.Capacity() == 2) SaveSettings(sParams[2]); else SaveSettings();}
 
 			else if (sParams[1] == T("set") && sParams.Capacity() == 3) mSets[sParams[2]] = (int) sParams[3];
+
+			else if (sParams[1] == T("debug") && sParams.Capacity() == 2) bDebug = (int) sParams[2];
 
 			else if (sParams[1] == T("kick") && sParams.Capacity() == 2) sSrv.Disconnect((int) sParams[2]);
 
@@ -312,16 +294,6 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 		case CMD_SET:
 
-			IF_DEBUG {
-
-				Console << T("\r\n >> Interpretuje polecenie: CMD_SET\r\n");
-
-				for (int i = 1; i <= sParams.Capacity(); i++) Console << T("\r\n\tParametr ") << i << T(": '") << sParams[i] << T("'");
-
-				Console << T("\r\n");
-
-			}
-
 			if (!sParams) return;
 
 			else if (sParams.Capacity() == 2 && mVars.Contain(sParams[1])) mVars[sParams[1]] = (int) sParams[2];
@@ -331,16 +303,6 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 		break;
 
 		case CMD_GET:
-
-			IF_DEBUG {
-
-				Console << T("\r\n >> Interpretuje polecenie: CMD_GET\r\n");
-
-				for (int i = 1; i <= sParams.Capacity(); i++) Console << T("\r\n\tParametr ") << i << T(": '") << sParams[i] << T("'");
-
-				Console << T("\r\n");
-
-			}
 
 			if (!sParams) return;
 
