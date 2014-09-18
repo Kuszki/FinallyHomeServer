@@ -14,42 +14,31 @@
 Plik jest dołączany przez server.hpp.
 */
 
-ServerCore::ServerCore(bool bDebug)
-: Console(true)
+ServerCore::ServerCore(bool bDbg)
+: Console(true), bDebug(bDbg)
 {
 
-	Console << T("\n >> Inicjuje liste zmiennych\t");
+	Console.SetTitle(STR(T(PRODUCT_NAME)) + STR(T(" v")) + STR(T(VER_STRING)));
 
-	mVars.Add(0, T("porch.light.on"));
-	mVars.Add(0, T("porch.light.power"));
+	IF_DEBUG Console << T("\n >> Inicjuje sekcje krytyczne\t");
 
-	mVars.Add(0, T("doors.lock"));
-
-	mVars.Add(0, T("salon.light.on"));
-	mVars.Add(0, T("salon.light.power"));
-
-	mVars.Add(0, T("salon.blinds.on"));
-	mVars.Add(0, T("salon.blinds.power"));
-
-	mVars.Add(0, T("salon.heat.on"));
-	mVars.Add(0, T("salon.heat.power"));
-
-	mSets.Add(0, T("port"));
-	mSets.Add(bDebug, T("debug"));
-
-	Console << T("[OK]\n");
-
-	tThr.Add(0, ConsoleHandler);
+	tThr.Add(CONS_SECTION, ConsoleHandler);
 
 	sSec.Add(CORE_SECTION);
 	sSec.Add(CONS_SECTION);
 	sSec.Add(SOCK_SECTION);
 
+	IF_DEBUG Console << T("[OK]\n");
+
      LoadSettings();
 
      Start();
 
-     tThr.Start(0, this);
+     IF_DEBUG Console << T("\n >> Tworze watek wejscia konsoli\t");
+
+     tThr.Start(CONS_SECTION, this);
+
+     IF_DEBUG Console << T("[OK]\n");
 
      Sleep(100);
 
@@ -133,25 +122,18 @@ void ServerCore::LoadSettings(const STR& sFile)
 
 	IF_DEBUG Console << T("\nZmienne projektu:\n\n");
 
-	for (int i = 1; i <= mVars.Capacity(); i++){
+	mVars = iConfig.GetIntValues(T("VARS"));
 
-		mVars.SetDataByInt(iConfig.GetInt(T("VARS"), mVars.GetKey(i)), i);
-
-		IF_DEBUG Console << T("\t") << mVars.GetKey(i) << T(" = ") << mVars.GetDataByInt(i) << T("\n");
-
-	}
+	IF_DEBUG for (int i = 1; i <= mVars.Capacity(); i++) Console << T("\t") << mVars.GetKey(i) << T(" = ") << mVars.GetDataByInt(i) << T("\n");
 
 	IF_DEBUG Console << T("\nZmienne programu:\n\n");
 
-	for (int i = 1; i <= mSets.Capacity(); i++){
+	mSets = iConfig.GetIntValues(T("SRV"));
 
-		mSets.SetDataByInt(iConfig.GetInt(T("SRV"), mSets.GetKey(i)), i);
+	IF_DEBUG for (int i = 1; i <= mSets.Capacity(); i++) Console << T("\t") << mSets.GetKey(i) << T(" = ") << mSets.GetDataByInt(i) << T("\n");
 
-		IF_DEBUG Console << T("\t") << mSets.GetKey(i) << T(" = ") << mSets.GetDataByInt(i) << T("\n");
-
-	}
-
-	IF_DEBUG Console << T("\n >> Wczytywanie zakonczone\n"); else Console << T("\n >> Wczytuje wartosci zmiennych z pliku '") << sFile << T("'\t[OK]");
+	IF_DEBUG Console << T("\n >> Wczytywanie zakonczone\n");
+	else Console << T("\n >> Wczytuje wartosci zmiennych z pliku '") << sFile << T("'\t[OK]");
 
 }
 

@@ -17,7 +17,7 @@ Po dołączeniu go do projektu automatycznie dołączony zostanie też plik serv
 #ifndef _FINALLYHOMESERVER_CORE_HPP
 #define _FINALLYHOMESERVER_CORE_HPP
 
-#define IF_DEBUG if (mSets[S T("debug")]) //!< Skrócone wywołanie konstrukcji warunkowej.
+#define IF_DEBUG if (bDebug) //!< Skrócone wywołanie konstrukcji warunkowej.
 
 #define CMD_UNKNOWN 0 //!< Identyfikator nieznanego polecenia.
 
@@ -71,6 +71,12 @@ using namespace KuszkAPI;
          *
          */ SEC sSec;
 
+        /*! \brief Wyjście z informacjami o debugowaniu.
+         *
+         *  Odpowiada za włączenie lub wyłączenie szczegółowych komunikatów aplikacji.
+         *
+         */ BOOL bDebug;
+
     public:
 
         /*! \brief Konsola.
@@ -80,11 +86,11 @@ using namespace KuszkAPI;
          */ CON Console;
 
         /*! \brief Domyślny konstruktor klasy.
-         *  \param [in] bDebug Włącza komunikaty debugowania.
+         *  \param [in] bDbg Włącza komunikaty debugowania.
          *
-         *  Dokonuje inicjacji mapy ServerCore::mVars tak, aby przechowywała ona wszystkie zmienne używane w projekcie.
+         *  Tworzy sekcje krytyczne, wczytuję listę zmiennych i włącza serwer.
          *
-         */ ServerCore(bool bDebug);
+         */ ServerCore(bool bDbg);
 
         /*! \brief Destruktor.
          *

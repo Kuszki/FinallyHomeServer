@@ -24,6 +24,9 @@ Dołącza automatycznie wszystkie zależności.
 
 */
 
+#ifndef _FINALLYHOMESERVER_MAIN
+#define _FINALLYHOMESERVER_MAIN
+
 #include "..\..\KuszkAPI\KuszkAPI.hpp"
 
 #define PROMPT T("\r\n$: ")
@@ -31,6 +34,8 @@ Dołącza automatycznie wszystkie zależności.
 #define SOCK_SECTION 1
 #define CONS_SECTION 2
 #define CORE_SECTION 3
+
+#include "..\obj\FinallyHome_Server_private.h"
 
 #include "callbacks.hpp"
 #include "server.hpp"
@@ -48,13 +53,14 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
                int nFunsterStil)
 
 {
-    MSG mMsg;
+     MSG mMsg;
 
-    while (GetMessage(&mMsg, NULL, 0, 0)){
-       TranslateMessage(&mMsg);
-       DispatchMessage(&mMsg);
-    }
+     while (GetMessage(&mMsg, NULL, 0, 0)){
+          TranslateMessage(&mMsg);
+          DispatchMessage(&mMsg);
+     }
 
-    return mMsg.wParam;
+     return mMsg.wParam;
 }
 
+#endif
