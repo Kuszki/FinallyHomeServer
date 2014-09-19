@@ -14,6 +14,15 @@
 Plik jest dołączany przez server.hpp.
 */
 
+#include <KuszkAPI.hpp>
+
+#include "..\obj\FinallyHome_Server_private.h"
+
+#include "macros.hpp"
+
+#include "callbacks.hpp"
+#include "server.hpp"
+
 ServerCore::ServerCore(bool bDbg)
 : Console(true), bDebug(bDbg)
 {
@@ -132,7 +141,7 @@ void ServerCore::LoadSettings(const STR& sFile)
 
 	IF_DEBUG for (int i = 1; i <= mSets.Capacity(); i++) Console << T("\t") << mSets.GetKey(i) << T(" = ") << mSets.GetDataByInt(i) << T("\n");
 
-	IF_DEBUG Console << T("\n >> Wczytywanie zakonczone\n");
+	IF_DEBUG Console << T("\n << Wczytywanie zakonczone\n");
 	else Console << T("\n >> Wczytuje wartosci zmiennych z pliku '") << sFile << T("'\t[OK]");
 
 }
@@ -154,7 +163,7 @@ void ServerCore::SaveSettings(const STR& sFile)
 
 	}
 
-	IF_DEBUG Console << T("\n >> Zapisywanie zakonczone\n"); else Console << T("\n >> Zapisuje wartosci zmiennych do pliku '") << sFile << T("'\t[OK]");
+	IF_DEBUG Console << T("\n << Zapisywanie zakonczone\n"); else Console << T("\n >> Zapisuje wartosci zmiennych do pliku '") << sFile << T("'\t[OK]");
 
 }
 

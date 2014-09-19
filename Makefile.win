@@ -1,20 +1,20 @@
 # Project: FinallyHome Server
 # Compiler: GCC GUI
 # Compiler Type: MingW 3
-# Makefile created by wxDev-C++ IDE 7.4.2.569 on 18-09-14 16:48
+# Makefile created by wxDev-C++ IDE 7.4.2.569 on 19-09-14 18:32
 
 WXLIBNAME = wxmsw29u
 CPP       = g++.exe
 CC        = gcc.exe
 WINDRES   = "windres.exe"
-OBJ       = obj/main.o obj/FinallyHome_Server_private.res
-LINKOBJ   = "obj/main.o" obj/FinallyHome_Server_private.res
-LIBS      = -L"C:/Programy/Dev-Cpp" -lgdi32 -lcomctl32 -lwsock32 -mwindows -mwindows  -g3 -msse2 
-INCS      = -I"C:/Programy/Dev-Cpp/include" -I"C:/Programy/Dev-Cpp/include/common" -I"C:/Programy/Dev-Cpp/include/common/wx"
-CXXINCS   = -I"C:/Programy/Dev-Cpp/include"
+OBJ       = obj/main.o obj/server.o obj/callbacks.o obj/KuszkAPI.o obj/FinallyHome_Server_private.res
+LINKOBJ   = "obj/main.o" "obj/server.o" "obj/callbacks.o" "obj/KuszkAPI.o" obj/FinallyHome_Server_private.res
+LIBS      = -L"C:/Programy/Dev-Cpp" -lgdi32 -lcomctl32 -lwsock32 -mwindows  -g3 -msse2 
+INCS      = -I"C:/Programy/Dev-Cpp/include" -I"C:/Programy/Dev-Cpp/include/common" -I"C:/Programy/Dev-Cpp/include/common/wx" -I"D:/Inne/GitHub/KuszkAPI" -I"D:/Inne/GitHub/KuszkAPI"
+CXXINCS   = -I"C:/Programy/Dev-Cpp/include" -I"D:/Inne/GitHub/KuszkAPI"
 RCINCS    = --include-dir "C:/Programy/Dev-Cpp/include/common"
 BIN       = bin/Server.exe
-DEFINES   = 
+DEFINES   = -DKUSZKAPI_TEMPLATE_SPEC=\"D:/Inne/GitHub/FinallyHomeServer/src/specs.hpp\"
 CXXFLAGS  = $(CXXINCS) $(DEFINES)   -fexpensive-optimizations -O3 -g3 -msse2
 CFLAGS    = $(INCS) $(DEFINES)   -fexpensive-optimizations -O3 -g3 -msse2
 GPROF     = gprof.exe
@@ -38,6 +38,15 @@ $(BIN): $(OBJ)
 
 obj/main.o: $(GLOBALDEPS) src/main.cpp
 	$(CPP) -c src/main.cpp -o obj/main.o $(CXXFLAGS)
+
+obj/server.o: $(GLOBALDEPS) src/server.cpp
+	$(CPP) -c src/server.cpp -o obj/server.o $(CXXFLAGS)
+
+obj/callbacks.o: $(GLOBALDEPS) src/callbacks.cpp
+	$(CPP) -c src/callbacks.cpp -o obj/callbacks.o $(CXXFLAGS)
+
+obj/KuszkAPI.o: $(GLOBALDEPS) ../KuszkAPI/KuszkAPI.cpp
+	$(CPP) -c ../KuszkAPI/KuszkAPI.cpp -o obj/KuszkAPI.o $(CXXFLAGS)
 
 obj/FinallyHome_Server_private.res: obj/FinallyHome_Server_private.rc 
 	$(WINDRES) --input-format=rc -o obj/FinallyHome_Server_private.res $(RCINCS) obj/FINALL~1.RC -O coff

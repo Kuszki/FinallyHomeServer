@@ -14,6 +14,15 @@
 Plik jest dołączany przez callbacks.hpp.
 */
 
+#include <KuszkAPI.hpp>
+
+#include "..\obj\FinallyHome_Server_private.h"
+
+#include "macros.hpp"
+
+#include "callbacks.hpp"
+#include "server.hpp"
+
 extern ServerCore Eng;
 
 MAP<STR, SOCKET> mBuffer;

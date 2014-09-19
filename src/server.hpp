@@ -17,16 +17,6 @@ Po dołączeniu go do projektu automatycznie dołączony zostanie też plik serv
 #ifndef _FINALLYHOMESERVER_CORE_HPP
 #define _FINALLYHOMESERVER_CORE_HPP
 
-#define IF_DEBUG if (bDebug) //!< Skrócone wywołanie konstrukcji warunkowej.
-
-#define CMD_UNKNOWN 0 //!< Identyfikator nieznanego polecenia.
-
-#define CMD_RCON 1 //!< Identyfikator polecenia "rcon".
-#define CMD_SET 2 //!< Identyfikator polecenia "set".
-#define CMD_GET 3 //!< Identyfikator polecenia "get".
-
-#define CMD_BYE 10 //!< Identyfikator polecenia "bye".
-
 using namespace KuszkAPI;
 
 // ----- CLASS DECLARATION -----

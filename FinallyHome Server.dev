@@ -1,20 +1,20 @@
 [Project]
 FileName=FinallyHome Server.dev
 Name=FinallyHome Server
-UnitCount=5
+UnitCount=8
 PchHead=-1
 PchSource=-1
 Ver=3
 IsCpp=1
-ProfilesCount=2
+ProfilesCount=1
 ProfileIndex=0
-Folders=
+Folders=Headers,KuszkAPI,Source
 
 [VersionInfo]
 Major=1
 Minor=0
 Release=0
-Build=347
+Build=394
 LanguageID=1045
 CharsetID=1252
 CompanyName=KuszkiDevGroup
@@ -28,20 +28,20 @@ ProductName=FinallyHome Server
 ProductVersion=1.0
 AutoIncBuildNrOnRebuild=1
 AutoIncBuildNrOnCompile=0
-UnitCount=5
+UnitCount=8
 
 [Profile1]
 ProfileName=MingW gcc
 Type=0
 ObjFiles=
-Includes=
+Includes=D:\Inne\GitHub\KuszkAPI
 Libs=
 ResourceIncludes=
 MakeIncludes=
 Compiler=
 CppCompiler=
-Linker=-mwindows_@@_
-PreprocDefines=
+Linker=
+PreprocDefines=KUSZKAPI_TEMPLATE_SPEC=\"D:/Inne/GitHub/FinallyHomeServer/src/specs.hpp\"_@@_
 CompilerSettings=000000000100100100000b
 Icon=FinallyHome Server.ico
 ExeOutput=bin
@@ -61,7 +61,7 @@ CompilerType=0
 [Unit1]
 FileName=src\main.cpp
 CompileCpp=1
-Folder=FinallyHome Server
+Folder=Source
 Compile=1
 Link=1
 Priority=1000
@@ -70,18 +70,18 @@ BuildCmd=
 
 [Unit2]
 FileName=src\server.cpp
-CompileCpp=0
-Folder=
-Compile=0
-Link=0
+CompileCpp=1
+Folder=Source
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
-BuildCmd=$(CC) -c server.cpp -o obj/server.o $(CFLAGS)
+BuildCmd=$(CPP) -c server.cpp -o obj/server.o $(CXXFLAGS)
 
 [Unit3]
 FileName=src\server.hpp
 CompileCpp=1
-Folder=
+Folder=Headers
 Compile=1
 Link=1
 Priority=1000
@@ -91,9 +91,9 @@ BuildCmd=
 [Unit4]
 FileName=src\callbacks.cpp
 CompileCpp=1
-Folder=FinallyHome Server
-Compile=0
-Link=0
+Folder=Source
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=$(CPP) -c callbacks.cpp -o obj/callbacks.o $(CXXFLAGS)
@@ -101,7 +101,7 @@ BuildCmd=$(CPP) -c callbacks.cpp -o obj/callbacks.o $(CXXFLAGS)
 [Unit5]
 FileName=src\callbacks.hpp
 CompileCpp=1
-Folder=FinallyHome Server
+Folder=Headers
 Compile=1
 Link=1
 Priority=1000
@@ -135,4 +135,34 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerType=0
+
+[Unit6]
+FileName=src\specs.hpp
+CompileCpp=1
+Folder=Headers
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit7]
+FileName=..\KuszkAPI\KuszkAPI.cpp
+CompileCpp=1
+Folder=KuszkAPI
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit8]
+FileName=..\KuszkAPI\KuszkAPI.hpp
+CompileCpp=1
+Folder=KuszkAPI
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
 

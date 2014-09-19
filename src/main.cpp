@@ -27,30 +27,24 @@ Dołącza automatycznie wszystkie zależności.
 #ifndef _FINALLYHOMESERVER_MAIN
 #define _FINALLYHOMESERVER_MAIN
 
-#include "..\..\KuszkAPI\KuszkAPI.hpp"
-
-#define PROMPT T("\r\n$: ")
-
-#define SOCK_SECTION 1
-#define CONS_SECTION 2
-#define CORE_SECTION 3
+#include <KuszkAPI.hpp>
 
 #include "..\obj\FinallyHome_Server_private.h"
+
+#include "macros.hpp"
 
 #include "callbacks.hpp"
 #include "server.hpp"
 
-#include "callbacks.cpp"
-#include "server.cpp"
-
-using namespace KuszkAPI;
+//#include "callbacks.cpp"
+//#include "server.cpp"
 
 ServerCore Eng(true);
 
 int WINAPI WinMain (HINSTANCE hThisInstance,
-               HINSTANCE hPrevInstance,
-               LPSTR lpszArgument,
-               int nFunsterStil)
+				HINSTANCE hPrevInstance,
+				LPSTR lpszArgument,
+				int nFunsterStil)
 
 {
      MSG mMsg;
