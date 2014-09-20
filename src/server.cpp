@@ -184,7 +184,11 @@ void ServerCore::OnDisconnect(SOCKET sClient)
 void ServerCore::OnVarChange(const STR& sVar, int iValue)
 {
 
-	// TODO
+	STR sMessage = S T("set ") + sVar + S T(" ") + S iValue + S T("\n");
+
+	mVars[sVar] = iValue;
+
+	for (int i = 1; i <= sSrv.Capacity(); i++) sSrv.GetClient(i) << sMessage;
 
 }
 
@@ -305,7 +309,7 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 			if (!sParams) return;
 
-			else if (sParams.Capacity() == 2 && mVars.Contain(sParams[1])) mVars[sParams[1]] = (int) sParams[2];
+			else if (sParams.Capacity() == 2) if (mVars.Contain(sParams[1])) OnVarChange(sParams[1], (int) sParams[2]);
 
 			else tTerminal << S T(" >> Nieprawidlowa liczba parametrow lub niezdefiniowana zmienna\n\t");
 
