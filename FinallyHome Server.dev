@@ -14,7 +14,7 @@ Folders=Headers,KuszkAPI,Source
 Major=1
 Minor=0
 Release=0
-Build=400
+Build=402
 LanguageID=1045
 CharsetID=1252
 CompanyName=KuszkiDevGroup
@@ -42,7 +42,7 @@ Compiler=
 CppCompiler=
 Linker=
 PreprocDefines=KUSZKAPI_TEMPLATE_SPEC=\"D:/Inne/GitHub/FinallyHomeServer/src/specs.hpp\"_@@_
-CompilerSettings=000000000100100100000b
+CompilerSettings=00000000010010000000td
 Icon=FinallyHome Server.ico
 ExeOutput=bin
 ImagesOutput=img

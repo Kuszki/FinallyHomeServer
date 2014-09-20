@@ -1,3 +1,9 @@
+/*! \file
+    \brief Plik zawierający specyfikację szablonów importowanych ze środowiska KuszkAPI.
+
+Dołączany do KuszkAPI.cpp za pomocą odpowiedniej definicji umożliwia skompilowanie szablonów w odpowiedniej konfiguracji by uniknąć błędów linkera.
+*/
+
 template class MAP<int, STR>;
 template class MAP<STR, int>;
 template class MAP<STR, unsigned>;
