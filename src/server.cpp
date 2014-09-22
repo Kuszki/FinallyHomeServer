@@ -155,13 +155,15 @@ void ServerCore::SaveSettings(const STR& sFile)
 
 	IF_DEBUG Console << T("\nZmienne projektu:\n\n");
 
-	for (int i = 1; i <= mVars.Capacity(); i++){
+	iConfig.SetIntValues(mVars, T("VARS"));
 
-		iConfig.SetInt(T("VARS"), mVars.GetKey(i), mVars.GetDataByInt(i));
+	IF_DEBUG for (int i = 1; i <= mVars.Capacity(); i++) Console << T("\t") << mVars.GetKey(i) << T(" = ") << mVars.GetDataByInt(i) << T("\n");
 
-		IF_DEBUG Console << T("\t") << mVars.GetKey(i) << T(" = ") << mVars.GetDataByInt(i) << T("\n");
+	IF_DEBUG Console << T("\nZmienne programu:\n\n");
 
-	}
+	iConfig.SetIntValues(mSets, T("SRV"));
+
+	IF_DEBUG for (int i = 1; i <= mSets.Capacity(); i++) Console << T("\t") << mSets.GetKey(i) << T(" = ") << mSets.GetDataByInt(i) << T("\n");
 
 	IF_DEBUG Console << T("\n << Zapisywanie zakonczone\n"); else Console << T("\n >> Zapisuje wartosci zmiennych do pliku '") << sFile << T("'\t[OK]");
 
