@@ -36,9 +36,6 @@ Dołącza automatycznie wszystkie zależności.
 #include "callbacks.hpp"
 #include "server.hpp"
 
-//#include "callbacks.cpp"
-//#include "server.cpp"
-
 ServerCore Eng(true);
 
 int WINAPI WinMain (HINSTANCE hThisInstance,

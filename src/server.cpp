@@ -186,7 +186,7 @@ void ServerCore::OnDisconnect(SOCKET sClient)
 void ServerCore::OnVarChange(const STR& sVar, int iValue)
 {
 
-	STR sMessage = S T("set ") + sVar + S T(" ") + S iValue + S T("\n");
+	STR sMessage = S T("set ") + sVar + S T(" ") + S iValue + S T("\r\n");
 
 	mVars[sVar] = iValue;
 
@@ -264,6 +264,8 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 			else if ((sParams[1] == T("quit")) || (sParams[1] == T("exit"))) Shutdown();
 
 			else if (sParams[1] == T("save")) {if (sParams.Capacity() == 2) SaveSettings(sParams[2]); else SaveSettings();}
+
+			else if (sParams[1] == T("load")) {if (sParams.Capacity() == 2) LoadSettings(sParams[2]); else LoadSettings();}
 
 			else if (sParams[1] == T("set") && sParams.Capacity() == 3) mSets[sParams[2]] = (int) sParams[3];
 
