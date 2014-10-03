@@ -305,7 +305,7 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 			}
 
-			else tTerminal << S T(" >> Nieznane parametry polecenia lub nieprawidlowa liczba parametrow\n\t");
+			else tTerminal << S T(" >> Nieznane parametry polecenia lub nieprawidlowa liczba parametrow\r\n");
 
 		break;
 
@@ -315,7 +315,7 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 			else if (sParams.Capacity() == 2) if (mVars.Contain(sParams[1])) OnVarChange(sParams[1], (int) sParams[2]);
 
-			else tTerminal << S T(" >> Nieprawidlowa liczba parametrow lub niezdefiniowana zmienna\n\t");
+			else tTerminal << S T(" >> Nieprawidlowa liczba parametrow lub niezdefiniowana zmienna\r\n");
 
 		break;
 
