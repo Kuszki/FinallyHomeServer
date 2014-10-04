@@ -1,2 +1,4 @@
 /bin/*.exe
 /obj/*.o
+/doc/*
+!/doc/doxyfile

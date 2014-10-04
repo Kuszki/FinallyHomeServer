@@ -1,3 +1,19 @@
+/*********************************************
+
+    FinallyHome Server macros headers
+
+    copyright: KuszkiDevGroup
+
+    license: GNU GPL v2
+
+*********************************************/
+
+/*! \file
+    \brief Plik zawierający macra użyte w projekcie.
+
+Zawiera deklaracje wszystkich ważnych macr.
+*/
+
 #ifndef _FINALLYHOMESERVER_MACROS_HPP
 #define _FINALLYHOMESERVER_MACROS_HPP
 

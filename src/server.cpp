@@ -11,7 +11,7 @@
 /*! \file
     \brief Plik zawierający definicje dla modułu "core".
 
-Plik jest dołączany przez server.hpp.
+Zawiera implementacje klasy ServerCore.
 */
 
 #include <KuszkAPI.hpp>

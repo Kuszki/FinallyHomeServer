@@ -11,7 +11,7 @@
 /*! \file
     \brief Główny plik projektu.
 
-Dołącza automatycznie wszystkie zależności.
+Zawiera pętle obsługi zdarzeń dla głównego wątku oraz globalną instancję klasy ServerCore.
 */
 
 /*! \mainpage FinallyHomeServer

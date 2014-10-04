@@ -11,7 +11,7 @@
 /*! \file
     \brief Plik zawierający definicje dla modułu "callback".
 
-Plik jest dołączany przez callbacks.hpp.
+Implementuje funkcje ServerHandler i ConsoleHandler.
 */
 
 #include <KuszkAPI.hpp>
