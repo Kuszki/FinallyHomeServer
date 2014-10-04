@@ -11,7 +11,7 @@
 /*! \file
     \brief Plik zawierający deklaracje dla modułu "callback".
 
-Po dołączeniu go do projektu automatycznie dołączony zostanie też plik callbacks.cpp.
+Zawiera deklaracje funkcji ServerHandler oraz ConsoleHandler.
 */
 
 #ifndef _FINALLYHOMESERVER_CALLBACK_HPP

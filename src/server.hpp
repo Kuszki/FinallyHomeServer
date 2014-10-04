@@ -11,7 +11,7 @@
 /*! \file
     \brief Plik zawierający deklaracje dla modułu "core".
 
-Po dołączeniu go do projektu automatycznie dołączony zostanie też plik server.cpp.
+Zawiera deklaracje klasy ServerCore.
 */
 
 #ifndef _FINALLYHOMESERVER_CORE_HPP
