@@ -1,52 +1,42 @@
 # Project: FinallyHome Server
-# Compiler: GCC GUI
-# Compiler Type: MingW 3
-# Makefile created by wxDev-C++ IDE 7.4.2.569 on 03-10-14 16:34
+# Makefile created by Dev-C++ 5.7.1
 
-WXLIBNAME = wxmsw29u
-CPP       = g++.exe
-CC        = gcc.exe
-WINDRES   = "windres.exe"
-OBJ       = obj/main.o obj/server.o obj/callbacks.o obj/KuszkAPI.o obj/FinallyHome_Server_private.res
-LINKOBJ   = "obj/main.o" "obj/server.o" "obj/callbacks.o" "obj/KuszkAPI.o" obj/FinallyHome_Server_private.res
-LIBS      = -L"C:/Programy/Dev-Cpp" -lgdi32 -lcomctl32 -lwsock32 -mwindows  -march=k8 -m3dnow 
-INCS      = -I"C:/Programy/Dev-Cpp/include" -I"C:/Programy/Dev-Cpp/include/common" -I"C:/Programy/Dev-Cpp/include/common/wx" -I"D:/Inne/GitHub/KuszkAPI" -I"D:/Inne/GitHub/KuszkAPI"
-CXXINCS   = -I"C:/Programy/Dev-Cpp/include" -I"D:/Inne/GitHub/KuszkAPI"
-RCINCS    = --include-dir "C:/Programy/Dev-Cpp/include/common"
-BIN       = bin/Server.exe
-DEFINES   = -DKUSZKAPI_TEMPLATE_SPEC=\"D:/Inne/GitHub/FinallyHomeServer/src/specs.hpp\"
-CXXFLAGS  = $(CXXINCS) $(DEFINES)   -fexpensive-optimizations -O3 -march=k8 -m3dnow
-CFLAGS    = $(INCS) $(DEFINES)   -fexpensive-optimizations -O3 -march=k8 -m3dnow
-GPROF     = gprof.exe
-ifeq ($(OS),Windows_NT)
-   RM = del /Q
-   FixPath = $(subst /,\,$1)
-else
-   RM = rm -f
-   FixPath = $1
-endif
-LINK      = g++.exe
+CPP      = g++.exe
+CC       = gcc.exe
+WINDRES  = windres.exe
+RES      = obj/FinallyHome_Server_private.res
+OBJ      = obj/main.o obj/server.o obj/callbacks.o obj/KuszkAPI.o $(RES)
+LINKOBJ  = obj/main.o obj/server.o obj/callbacks.o obj/KuszkAPI.o $(RES)
+LIBS     = -L"D:/Inne/Dev-Cpp/MinGW64/lib32" -L"D:/Inne/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -static-libgcc -mwindows -lgdi32 -lcomctl32 -lwsock32 -mwindows -m32
+INCS     = -I"D:/Inne/Dev-Cpp/MinGW64/include" -I"D:/Inne/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Inne/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include"
+CXXINCS  = -I"D:/Inne/Dev-Cpp/MinGW64/include" -I"D:/Inne/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Inne/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"D:/Inne/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include/c++"
+BIN      = bin/Server.exe
+CXXFLAGS = $(CXXINCS) -ansi -traditional-cpp -Ofast -m32 -std=gnu++11 -D KUSZKAPI_TEMPLATE_SPEC=\"D:/Inne/GitHub/FinallyHomeServer/src/specs.hpp\"
+CFLAGS   = $(INCS) -ansi -traditional-cpp -Ofast -m32 -std=gnu++11
+RM       = rm.exe -f
 
 .PHONY: all all-before all-after clean clean-custom
+
 all: all-before $(BIN) all-after
 
 clean: clean-custom
-	$(RM) $(call FixPath,$(LINKOBJ)) "$(call FixPath,$(BIN))"
+	${RM} $(OBJ) $(BIN)
 
 $(BIN): $(OBJ)
-	$(LINK) $(LINKOBJ) -o "$(BIN)" $(LIBS) 
+	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
 
-obj/main.o: $(GLOBALDEPS) src/main.cpp
+obj/main.o: src/main.cpp
 	$(CPP) -c src/main.cpp -o obj/main.o $(CXXFLAGS)
 
-obj/server.o: $(GLOBALDEPS) src/server.cpp
+obj/server.o: src/server.cpp
 	$(CPP) -c src/server.cpp -o obj/server.o $(CXXFLAGS)
 
-obj/callbacks.o: $(GLOBALDEPS) src/callbacks.cpp
+obj/callbacks.o: src/callbacks.cpp
 	$(CPP) -c src/callbacks.cpp -o obj/callbacks.o $(CXXFLAGS)
 
-obj/KuszkAPI.o: $(GLOBALDEPS) ../KuszkAPI/KuszkAPI.cpp
+obj/KuszkAPI.o: ../KuszkAPI/KuszkAPI.cpp
 	$(CPP) -c ../KuszkAPI/KuszkAPI.cpp -o obj/KuszkAPI.o $(CXXFLAGS)
 
-obj/FinallyHome_Server_private.res: obj/FinallyHome_Server_private.rc 
-	$(WINDRES) --input-format=rc -o obj/FinallyHome_Server_private.res $(RCINCS) obj/FINALL~1.RC -O coff
+obj/FinallyHome_Server_private.res: FinallyHome_Server_private.rc 
+	$(WINDRES) -i FinallyHome_Server_private.rc -F pe-i386 --input-format=rc -o obj/FinallyHome_Server_private.res -O coff 
+
