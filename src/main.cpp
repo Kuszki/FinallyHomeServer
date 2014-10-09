@@ -27,16 +27,19 @@ Zawiera pętle obsługi zdarzeń dla głównego wątku oraz globalną instancję
 #ifndef _FINALLYHOMESERVER_MAIN
 #define _FINALLYHOMESERVER_MAIN
 
-#include <KuszkAPI.hpp>
+#include "D:\Inne\GitHub\KuszkAPI\KuszkAPI.hpp"
 
-#include "..\obj\FinallyHome_Server_private.h"
+#include "..\FinallyHome_Server_private.h"
 
 #include "macros.hpp"
 
 #include "callbacks.hpp"
 #include "server.hpp"
 
-ServerCore Eng(true);
+CON Console;
+WND Window;
+
+ServerCore Eng(Console, Window);
 
 int WINAPI WinMain (HINSTANCE hThisInstance,
 				HINSTANCE hPrevInstance,
@@ -45,6 +48,8 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
 
 {
      MSG mMsg;
+
+     Eng.Initiate(Containers::Strings(lpszArgument, T(' '), true));
 
      while (GetMessage(&mMsg, NULL, 0, 0)){
           TranslateMessage(&mMsg);
