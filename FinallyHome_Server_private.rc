@@ -7,11 +7,18 @@
 A ICON "FinallyHome Server.ico"
 
 //
+// SUPPORT FOR WINDOWS XP THEMES:
+// THIS WILL MAKE THE PROGRAM USE THE COMMON CONTROLS
+// LIBRARY VERSION 6.0 (IF IT IS AVAILABLE)
+//
+1 24 "bin/Server.exe.Manifest"
+
+//
 // TO CHANGE VERSION INFORMATION, EDIT PROJECT OPTIONS...
 //
 1 VERSIONINFO
-FILEVERSION 1,0,0,467
-PRODUCTVERSION 1,0,0,467
+FILEVERSION 1,0,0,506
+PRODUCTVERSION 1,0,0,506
 FILETYPE VFT_APP
 {
   BLOCK "StringFileInfo"
@@ -19,14 +26,14 @@ FILETYPE VFT_APP
     BLOCK "041504E4"
     {
       VALUE "CompanyName", "KuszkiDevGroup"
-      VALUE "FileVersion", "1.0.0.467"
+      VALUE "FileVersion", "1.0.0.506"
       VALUE "FileDescription", "FinallyHome inteligent home server"
       VALUE "InternalName", "Server"
       VALUE "LegalCopyright", "£ukasz 'Kuszki' Dró¿d¿"
       VALUE "LegalTrademarks", "KuszkiDevGroup"
       VALUE "OriginalFilename", "Server.exe"
       VALUE "ProductName", "FinallyHome Server"
-      VALUE "ProductVersion", "1.0.0.467"
+      VALUE "ProductVersion", "1.0.0.506"
     }
   }
   BLOCK "VarFileInfo"

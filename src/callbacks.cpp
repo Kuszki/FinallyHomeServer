@@ -14,7 +14,7 @@
 Implementuje funkcje ServerHandler i ConsoleHandler.
 */
 
-#include "D:\Inne\GitHub\KuszkAPI\KuszkAPI.hpp"
+#include KUSZKAPI_PATH
 
 #include "..\FinallyHome_Server_private.h"
 

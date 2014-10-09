@@ -27,7 +27,7 @@ Zawiera pętle obsługi zdarzeń dla głównego wątku oraz globalną instancję
 #ifndef _FINALLYHOMESERVER_MAIN
 #define _FINALLYHOMESERVER_MAIN
 
-#include "D:\Inne\GitHub\KuszkAPI\KuszkAPI.hpp"
+#include KUSZKAPI_PATH
 
 #include "..\FinallyHome_Server_private.h"
 

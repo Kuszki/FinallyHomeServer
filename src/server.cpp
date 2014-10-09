@@ -14,7 +14,7 @@
 Zawiera implementacje klasy ServerCore.
 */
 
-#include "D:\Inne\GitHub\KuszkAPI\KuszkAPI.hpp"
+#include KUSZKAPI_PATH
 
 #include "..\FinallyHome_Server_private.h"
 
@@ -67,6 +67,9 @@ void ServerCore::Initiate(Containers::Strings sParams)
 			Window.New(T("FINALLYHOME_SERVER"), STR(T(PRODUCT_NAME)) + STR(T(" v")) + STR(T(VER_STRING)), WindowHandler);
 			Window.Register();
 			Window.Create(0, WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME, NULL, 500, 700);
+
+			Window.Widgets.Tabs.Add(901);
+			Window.Widgets.Tabs[901].Create(5, 5, 485, 660, Containers::Strings("Sterowanie;Salon;Przedpokój", ';'));
 
 			Window.Show();
 
@@ -165,7 +168,7 @@ bool ServerCore::LoadSettings(const STR& sFile)
 
 	mSets = iConfig.GetIntValues(T("SRV"));
 
-	IF_DEBUG foreach(mVars) Console << T("\t") << mSets.GetKey(i) << T(" = ") << mSets.GetDataByInt(i) << T("\n");
+	IF_DEBUG foreach(mSets) Console << T("\t") << mSets.GetKey(i) << T(" = ") << mSets.GetDataByInt(i) << T("\n");
 
 	IF_DEBUG Console << T("\n << Wczytywanie zakonczone\n");
 	else Console << T("\n >> Wczytuje wartosci zmiennych z pliku '") << sFile << T("'\t[OK]");

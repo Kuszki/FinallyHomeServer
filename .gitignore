@@ -1,4 +1,7 @@
-/bin/*.exe
-/obj/*.o
+/bin/*
+!/bin/Server.exe.Manifest
+
 /doc/*
 !/doc/doxyfile
+
+/obj/*
