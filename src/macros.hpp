@@ -21,7 +21,8 @@ Zawiera deklaracje wszystkich ważnych macr.
 
 #define SOCK_SECTION	1			//!< Identyfikator sekcji krytycznej gniazda.
 #define CONS_SECTION	2			//!< Identyfikator sekcji krytycznej konsoli.
-#define CORE_SECTION	3			//!< Identyfikator sekcji krytycznej jądra.
+#define WIND_SECTION	3			//!< Identyfikator sekcji krytycznej okna.
+#define CORE_SECTION	4			//!< Identyfikator sekcji krytycznej jądra.
 
 #define IF_DEBUG 		if (bDebug)	//!< Skrócone wywołanie konstrukcji warunkowej.
 
