@@ -14,9 +14,9 @@
 Implementuje funkcje ServerHandler i ConsoleHandler.
 */
 
-#include <KuszkAPI.hpp>
+#include "D:\Inne\GitHub\KuszkAPI\KuszkAPI.hpp"
 
-#include "..\obj\FinallyHome_Server_private.h"
+#include "..\FinallyHome_Server_private.h"
 
 #include "macros.hpp"
 
@@ -59,44 +59,34 @@ LRESULT ServerHandler(SRV& srv, UINT event, SOCKET id)
 
 			srv[id] >> sMessage;
 
-			if (sMessage[1] == (char) 255){
-
-				// DEBUG!
-
-				Eng.Console << T("\nTELNET MESSAGE: ");
-
-				for (int i = 1; i <=3; i++) Eng.Console << T("[") << (unsigned char) sMessage[i] << T("]");
-
-				Eng.Console << T(" EOM;\n");
-
-				return 0;
-
-			}
+			if (sMessage[1] == (char) 255) return 0;
 
 			mBuffer[id] += sMessage;
-
-			Eng.EnterSection(SOCK_SECTION);
 
 			if (mBuffer[id][0] == T('\n')){
 
 				mBuffer[id].Delete(T('\n'), true);
 				mBuffer[id].Delete(T('\r'), true);
 
+				Eng.EnterSection(SOCK_SECTION);
+
 				if (mBuffer[id]) Eng.OnRead(mBuffer[id], srv[id]); else srv[id] << PROMPT;
+
+				Eng.LeaveSection(SOCK_SECTION);
 
 				mBuffer[id].Clean();
 
 			}
 
-			Eng.LeaveSection(SOCK_SECTION);
-
 		}
 		break;
 
 		case FD_CLOSE:
+
 			Eng.OnDisconnect(id);
 
 			mBuffer.Delete(id);
+
 		break;
 	}
 
@@ -124,4 +114,40 @@ DWORD WINAPI ConsoleHandler(LPVOID pvArgs)
 	}
 
 	return 0;
+}
+
+LRESULT WINAPI WindowHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+     WND* fWnd = (WND*) GetWindowLong(hWnd, 0);
+
+     switch (uMsg){
+          case WM_CREATEWINDOW:
+
+          break;
+
+          case WM_DESTROY:
+
+               Eng.Stop();
+
+               PostQuitMessage(0);
+
+          break;
+
+          case WM_COMMAND:
+               switch (HIWORD(wParam)){
+                    case BN_CLICKED:
+                         switch (LOWORD(wParam)){
+                              case 301:
+                              {
+
+                              }
+                         }
+                    break;
+               }
+          break;
+
+          default: return DefWindowProc(hWnd, uMsg, wParam, lParam);
+    }
+
+    return 0;
 }

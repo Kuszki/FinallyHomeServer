@@ -35,4 +35,15 @@ Zawiera deklaracje funkcji ServerHandler oraz ConsoleHandler.
  *
  */ DWORD WINAPI ConsoleHandler(LPVOID pvArgs);
 
+/*! \brief Funkcja zwrotna okna programu.
+ *  \param [in] hWnd Uchwyt okna.
+ *  \param [in] uMsg Kod wiadomości.
+ *  \param [in] wParam Pierwszy parametr.
+ *  \param [in] lParam Drugi parametr.
+ *  \return Kod operacji. Domyślnie 0.
+ *
+ *  Pozwala obsługiwać zdarzenia okna aplikacji.
+ *
+ */ LRESULT WINAPI WindowHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
 #endif
