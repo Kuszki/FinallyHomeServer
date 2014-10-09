@@ -61,6 +61,12 @@ using namespace KuszkAPI;
          *
          */ SEC sSec;
 
+        /*! \brief Plik konfiguracji.
+         *
+         *  Ścieżka do pliku konfiguracyjnego.
+         *
+         */ STR sConfig;
+
         /*! \brief Wyjście z informacjami o debugowaniu.
          *
          *  Odpowiada za włączenie lub wyłączenie szczegółowych komunikatów aplikacji.
@@ -73,20 +79,33 @@ using namespace KuszkAPI;
          *
          *  Odpowiada za wyświetlanie i pobieranie danych.
          *
-         */ CON Console;
+         */ CON& Console;
+
+        /*! \brief Okno programu.
+         *
+         *  Odpowiada za interfejs graficzny.
+         *
+         */ WND& Window;
 
         /*! \brief Domyślny konstruktor klasy.
          *  \param [in] bDbg Włącza komunikaty debugowania.
          *
-         *  Tworzy sekcje krytyczne, wczytuję listę zmiennych i włącza serwer.
+         *  Tworzy sekcje krytyczne i obiekty potrzebne do pracy serwera.
          *
-         */ ServerCore(bool bDbg);
+         */ ServerCore(CON& cCon, WND& wWnd);
 
         /*! \brief Destruktor.
          *
          *  Zwalnia użyte zasoby.
          *
          */ ~ServerCore(void);
+
+        /*! \brief Inicjacja interfejsu na podstawie wejścia.
+         *  \param [in] sParams Parametry do przetworzenia.
+         *
+         *  Parsuje wejście i przetwarza podane parametry.
+         *
+         */ void Initiate(Containers::Strings sParams);
 
         /*! \brief Początek synchronizacji wątku.
          *  \param [in] uSection Numer sekcji do wejścia.
@@ -135,19 +154,18 @@ using namespace KuszkAPI;
 
         /*! \brief Wczytuje ustawienia z pliku ini.
          *  \param [in] sFile Nazwa pliku.
-         * 		    Domyślnie: "/conf/config.ini"
+         *  \return Powodzenia operacji.
          *
          *  Powoduje, że wszystkie wartości zmiennych serwera zostają wczytane z pliku konfiguracyjnego.
          *
-         */ void LoadSettings(const STR& sFile = T("../conf/config.ini"));
+         */ bool LoadSettings(const STR& sFile);
 
         /*! \brief Zapisuje bierzące ustawienia do pliku ini.
          *  \param [in] sFile Nazwa pliku.
-         * 		    Domyślnie: "/conf/config.ini"
          *
          *  Powoduje, że wszystkie wartości zmiennych serwera zostają zapisane do pliku konfiguracyjnego tak, aby w przyszłości można było je odtworzyć.
          *
-         */ void SaveSettings(const STR& sFile = T("../conf/config.ini"));
+         */ void SaveSettings(const STR& sFile);
 
         /*! \brief Zdarzenie wywoływane gdy nastąpi połączenie klienta.
          *  \param [in] sClient Identyfikator gniazda klienta.

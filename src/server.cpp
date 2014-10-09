@@ -14,49 +14,75 @@
 Zawiera implementacje klasy ServerCore.
 */
 
-#include <KuszkAPI.hpp>
+#include "D:\Inne\GitHub\KuszkAPI\KuszkAPI.hpp"
 
-#include "..\obj\FinallyHome_Server_private.h"
+#include "..\FinallyHome_Server_private.h"
 
 #include "macros.hpp"
 
 #include "callbacks.hpp"
 #include "server.hpp"
 
-ServerCore::ServerCore(bool bDbg)
-: Console(true), bDebug(bDbg)
+ServerCore::ServerCore(CON& cCon, WND& wWnd)
+: Console(cCon), Window(wWnd), bDebug(false)
 {
 
 	Console.SetTitle(STR(T(PRODUCT_NAME)) + STR(T(" v")) + STR(T(VER_STRING)));
-
-	IF_DEBUG Console << T("\n >> Inicjuje sekcje krytyczne\t");
 
 	tThr.Add(CONS_SECTION, ConsoleHandler);
 
 	sSec.Add(CORE_SECTION);
 	sSec.Add(CONS_SECTION);
+	sSec.Add(WIND_SECTION);
 	sSec.Add(SOCK_SECTION);
 
-	IF_DEBUG Console << T("[OK]\n");
-
-     LoadSettings();
-
-     Start();
-
-     IF_DEBUG Console << T("\n >> Tworze watek wejscia konsoli\t");
-
-     tThr.Start(CONS_SECTION, this);
-
-     IF_DEBUG Console << T("[OK]\n");
-
-     Sleep(100);
+	sConfig = T("../conf/config.ini");
 
 }
 
 ServerCore::~ServerCore(void)
 {
 
-	SaveSettings();
+	Stop();
+
+	SaveSettings(sConfig);
+
+}
+
+void ServerCore::Initiate(Containers::Strings sParams)
+{
+
+	if (!sParams.ParseQuotes()) return;
+
+	bool bInterface	=	false;
+
+	foreach(sParams){
+
+		if (sParams[i] == T("--debug")) bDebug = true;
+
+		if (sParams[i] == T("--console")) Console.Show(), bInterface = true;
+
+		if (sParams[i] == T("--window")){
+
+			Window.New(T("FINALLYHOME_SERVER"), STR(T(PRODUCT_NAME)) + STR(T(" v")) + STR(T(VER_STRING)), WindowHandler);
+			Window.Register();
+			Window.Create(0, WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME, NULL, 500, 700);
+
+			Window.Show();
+
+			bInterface = true;
+
+		}
+
+		if (sParams[i].Find(T("--config="))) sConfig = Containers::Strings(sParams[i], T('='))[2];
+
+	}
+
+	if (!bInterface) Console.Show();
+
+	if (LoadSettings(sConfig)) Start();
+
+     if (Console.Visible()) tThr.Start(CONS_SECTION, this);
 
 }
 
@@ -122,7 +148,7 @@ void ServerCore::Shutdown(void)
 
 }
 
-void ServerCore::LoadSettings(const STR& sFile)
+bool ServerCore::LoadSettings(const STR& sFile)
 {
 
 	INI iConfig(sFile);
@@ -133,21 +159,25 @@ void ServerCore::LoadSettings(const STR& sFile)
 
 	mVars = iConfig.GetIntValues(T("VARS"));
 
-	IF_DEBUG for (int i = 1; i <= mVars.Capacity(); i++) Console << T("\t") << mVars.GetKey(i) << T(" = ") << mVars.GetDataByInt(i) << T("\n");
+	IF_DEBUG foreach(mVars) Console << T("\t") << mVars.GetKey(i) << T(" = ") << mVars.GetDataByInt(i) << T("\n");
 
 	IF_DEBUG Console << T("\nZmienne programu:\n\n");
 
 	mSets = iConfig.GetIntValues(T("SRV"));
 
-	IF_DEBUG for (int i = 1; i <= mSets.Capacity(); i++) Console << T("\t") << mSets.GetKey(i) << T(" = ") << mSets.GetDataByInt(i) << T("\n");
+	IF_DEBUG foreach(mVars) Console << T("\t") << mSets.GetKey(i) << T(" = ") << mSets.GetDataByInt(i) << T("\n");
 
 	IF_DEBUG Console << T("\n << Wczytywanie zakonczone\n");
 	else Console << T("\n >> Wczytuje wartosci zmiennych z pliku '") << sFile << T("'\t[OK]");
+
+	return mSets.Capacity() && mVars.Capacity();
 
 }
 
 void ServerCore::SaveSettings(const STR& sFile)
 {
+
+	if (!mSets.Capacity() || !mVars.Capacity()) return;
 
 	INI iConfig(sFile);
 
@@ -263,9 +293,9 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 			else if (sParams[1] == T("shutdown")) Stop();
 			else if ((sParams[1] == T("quit")) || (sParams[1] == T("exit"))) Shutdown();
 
-			else if (sParams[1] == T("save")) {if (sParams.Capacity() == 2) SaveSettings(sParams[2]); else SaveSettings();}
+			else if (sParams[1] == T("save")) {if (sParams.Capacity() == 2) SaveSettings(sParams[2]); else SaveSettings(sConfig);}
 
-			else if (sParams[1] == T("load")) {if (sParams.Capacity() == 2) LoadSettings(sParams[2]); else LoadSettings();}
+			else if (sParams[1] == T("load")) {if (sParams.Capacity() == 2) LoadSettings(sParams[2]); else LoadSettings(sConfig);}
 
 			else if (sParams[1] == T("set") && sParams.Capacity() == 3) mSets[sParams[2]] = (int) sParams[3];
 
