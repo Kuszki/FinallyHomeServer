@@ -17,8 +17,8 @@ A ICON "FinallyHome Server.ico"
 // TO CHANGE VERSION INFORMATION, EDIT PROJECT OPTIONS...
 //
 1 VERSIONINFO
-FILEVERSION 1,0,0,506
-PRODUCTVERSION 1,0,0,506
+FILEVERSION 1,0,0,532
+PRODUCTVERSION 1,0,0,532
 FILETYPE VFT_APP
 {
   BLOCK "StringFileInfo"
@@ -26,14 +26,14 @@ FILETYPE VFT_APP
     BLOCK "041504E4"
     {
       VALUE "CompanyName", "KuszkiDevGroup"
-      VALUE "FileVersion", "1.0.0.506"
+      VALUE "FileVersion", "1.0.0.532"
       VALUE "FileDescription", "FinallyHome inteligent home server"
       VALUE "InternalName", "Server"
       VALUE "LegalCopyright", "£ukasz 'Kuszki' Dró¿d¿"
       VALUE "LegalTrademarks", "KuszkiDevGroup"
       VALUE "OriginalFilename", "Server.exe"
       VALUE "ProductName", "FinallyHome Server"
-      VALUE "ProductVersion", "1.0.0.506"
+      VALUE "ProductVersion", "1.0.0.532"
     }
   }
   BLOCK "VarFileInfo"

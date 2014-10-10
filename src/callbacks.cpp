@@ -133,6 +133,14 @@ LRESULT WINAPI WindowHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
           break;
 
+          case WM_NOTIFY:
+		{
+			LPNMHDR nInfo = (LPNMHDR) lParam;
+
+			if (nInfo->code == TCN_SELCHANGE) fWnd->Widgets.Tabs[CTR_TAB_CATS].SetTab();
+		}
+		break;
+
           case WM_COMMAND:
                switch (HIWORD(wParam)){
                     case BN_CLICKED:
