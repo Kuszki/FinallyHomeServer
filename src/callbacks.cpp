@@ -154,6 +154,14 @@ LRESULT WINAPI WindowHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                }
           break;
 
+          case WM_CTLCOLORSTATIC:
+		{
+			HDC hdcStatic = (HDC) wParam;
+			SetTextColor(hdcStatic, 0);
+			SetBkColor(hdcStatic, 0xFFFFFF);
+		}
+		break;
+
           default: return DefWindowProc(hWnd, uMsg, wParam, lParam);
     }
 

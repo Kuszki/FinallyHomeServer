@@ -10,6 +10,8 @@ template class MAP<STR, unsigned>;
 
 template class ARA<char>;
 
+template class VCT<unsigned>;
+
 template class THR;
 template class SEC;
 
@@ -17,6 +19,8 @@ template unsigned CLI::Send<char>(const ARA<char>&, unsigned);
 
 template void KuszkAPI::Forms::Controls::Group<KuszkAPI::Forms::TabBox>::Add(unsigned);
 template void KuszkAPI::Forms::Controls::Group<KuszkAPI::Forms::Label>::Add(unsigned);
+template void KuszkAPI::Forms::Controls::Group<KuszkAPI::Forms::TableBox>::Add(unsigned);
 
 template KuszkAPI::Forms::TabBox& KuszkAPI::Forms::Controls::Group<KuszkAPI::Forms::TabBox>::operator[] (unsigned);
 template KuszkAPI::Forms::Label& KuszkAPI::Forms::Controls::Group<KuszkAPI::Forms::Label>::operator[] (unsigned);
+template KuszkAPI::Forms::TableBox& KuszkAPI::Forms::Controls::Group<KuszkAPI::Forms::TableBox>::operator[] (unsigned);

@@ -27,7 +27,7 @@ ServerCore::ServerCore(CON& cCon, WND& wWnd)
 : Console(cCon), Window(wWnd), bDebug(false)
 {
 
-	Console.SetTitle(STR(T(PRODUCT_NAME)) + STR(T(" v")) + STR(T(VER_STRING)));
+	Console.SetTitle(APP_TITLE);
 
 	tThr.Add(CONS_SECTION, ConsoleHandler);
 
@@ -59,53 +59,71 @@ void ServerCore::Initiate(Containers::Strings sParams)
 	if (!sParams.ParseQuotes()) return;
 
 	bool bInterface	=	false;
+	bool bWindow		=	false;
 
 	foreach(sParams){
 
 		if (sParams[i] == T("--debug")) bDebug = true;
 
+		if (sParams[i].Find(T("--config="))) sConfig = Containers::Strings(sParams[i], T('='))[2];
+
 		if (sParams[i] == T("--console")) Console.Show(), bInterface = true;
 
-		if (sParams[i] == T("--window")){
-
-			Window.New(T("FINALLYHOME_SERVER"), STR(T(PRODUCT_NAME)) + STR(T(" v")) + STR(T(VER_STRING)), WindowHandler);
-			Window.Register();
-			Window.Create(0, WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME, NULL, 500, 700);
-
-			Window.Widgets.Tabs.Add(CTR_TAB_CATS);
-			Window.Widgets.Tabs[CTR_TAB_CATS].Create(5, 5, 485, 660, Containers::Strings("Sterowanie;Salon;Przedpokój", ';'));
-
-			Widgets = new Forms::Controls(Window.Widgets.Tabs[CTR_TAB_CATS]);
-
-			auto& Buttons	= Widgets->Buttons;
-			auto& Checks	= Widgets->Checks;
-			auto& Bars	= Widgets->Tracks;
-			auto& Edits	= Widgets->Edits;
-			auto& Labels	= Widgets->Labels;
-
-			Labels.Add(CTR_GROUP_MAIN_VAR);
-			Labels.Add(CTR_GROUP_MAIN_SET);
-
-			Labels[CTR_GROUP_MAIN_VAR].Create(T("Zmienne"), 10, 30, 200, 400, BS_GROUPBOX, 0, T("BUTTON"));
-			Labels[CTR_GROUP_MAIN_VAR].Create(T("Zmienne"), 230, 30, 200, 400, BS_GROUPBOX, 0, T("BUTTON"));
-
-			//Buttons.Add()
-
-			//Window.Widgets.Tabs[CTR_TAB_CATS].SetTab(1);
-
-			Window.Show();
-
-			bInterface = true;
-
-		}
-
-		if (sParams[i].Find(T("--config="))) sConfig = Containers::Strings(sParams[i], T('='))[2];
+		if (sParams[i] == T("--window")) bWindow = bInterface = true;
 
 	}
 
 	if (!bInterface) Console.Show();
 
 	if (LoadSettings(sConfig)) Start();
+
+	if (bWindow){
+
+		Window.New(T("FINALLYHOME_SERVER"), APP_TITLE, WindowHandler);
+		Window.Register();
+		Window.Create(0, WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME, NULL, 500, 550);
+
+		Window.Widgets.Tabs.Add(CTR_TAB_CATS);
+		Window.Widgets.Tabs[CTR_TAB_CATS].Create(5, 5, 485, 510, Containers::Strings("Sterowanie;Salon;Przedpokój", ';'));
+
+		Widgets = new Forms::Controls(Window.Widgets.Tabs[CTR_TAB_CATS]);
+
+		auto& Buttons	= Widgets->Buttons;
+		auto& Checks	= Widgets->Checks;
+		auto& Bars	= Widgets->Tracks;
+		auto& Edits	= Widgets->Edits;
+		auto& Labels	= Widgets->Labels;
+		auto& Tables	= Widgets->Tables;
+
+		Labels.Add(CTR_GROUP_MAIN_SET);
+
+		Labels[CTR_GROUP_MAIN_SET].Create(T("Ustawienia"), 225, 30, 240, 200, BS_GROUPBOX, 0, T("BUTTON"));
+
+		Tables.Add(CTR_TABLE_VAR);
+		Tables.Add(CTR_TABLE_CLI);
+
+		unsigned puVarSize[] = {120, 70};
+		unsigned puCliSize[] = {100, 330};
+
+		Tables[CTR_TABLE_VAR].Create(10, 30, 200, 250);
+		Tables[CTR_TABLE_VAR].SetHeader(Containers::Strings(T("Zmienna\nWartoœæ")), Containers::Vector<unsigned>(puVarSize, 2));
+
+		Tables[CTR_TABLE_CLI].Create(10, 290, 460, 205);
+		Tables[CTR_TABLE_CLI].SetHeader(Containers::Strings(T("ID\nAdres po³¹czenia")), Containers::Vector<unsigned>(puCliSize, 2));
+
+		foreach(mVars){
+
+			Containers::Strings sTmp;
+
+			sTmp << mVars.GetKey(i) << S mVars.GetDataByInt(i);
+
+			Tables[CTR_TABLE_VAR].AddItem(sTmp);
+
+		}
+
+		Window.Show();
+
+	}
 
      if (Console.Visible()) tThr.Start(CONS_SECTION, this);
 
