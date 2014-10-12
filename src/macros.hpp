@@ -40,10 +40,11 @@ Zawiera deklaracje wszystkich ważnych macr.
 // Controls ID's
 #define CTR_TAB_CATS		101												//!< Identyfikator kontrolki zakładek.
 
-#define CTR_GROUP_MAIN_SET	111
-
-
 #define CTR_TABLE_VAR		201
 #define CTR_TABLE_CLI		202
+
+#define CTR_BTN_LOAD		301
+#define CTR_BTN_SAVE		302
+#define CTR_BTN_KICK		303
 
 #endif

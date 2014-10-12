@@ -38,14 +38,10 @@ ServerCore::ServerCore(CON& cCon, WND& wWnd)
 
 	sConfig = T("../conf/config.ini");
 
-	Widgets = nullptr;
-
 }
 
 ServerCore::~ServerCore(void)
 {
-
-	if (Widgets) delete Widgets;
 
 	Stop();
 
@@ -81,35 +77,29 @@ void ServerCore::Initiate(Containers::Strings sParams)
 
 		Window.New(T("FINALLYHOME_SERVER"), APP_TITLE, WindowHandler);
 		Window.Register();
-		Window.Create(0, WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME, NULL, 500, 550);
+		Window.Create(0, WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME, NULL, 450, 550);
 
 		Window.Widgets.Tabs.Add(CTR_TAB_CATS);
-		Window.Widgets.Tabs[CTR_TAB_CATS].Create(5, 5, 485, 510, Containers::Strings("Sterowanie;Salon;Przedpokój", ';'));
+		Window.Widgets.Tabs[CTR_TAB_CATS].Create(210, 5, 225, 230, Containers::Strings("Sterowanie\nSalon\nPrzedpokÃ³j"));
 
-		Widgets = new Forms::Controls(Window.Widgets.Tabs[CTR_TAB_CATS]);
-
-		auto& Buttons	= Widgets->Buttons;
-		auto& Checks	= Widgets->Checks;
-		auto& Bars	= Widgets->Tracks;
-		auto& Edits	= Widgets->Edits;
-		auto& Labels	= Widgets->Labels;
-		auto& Tables	= Widgets->Tables;
-
-		Labels.Add(CTR_GROUP_MAIN_SET);
-
-		Labels[CTR_GROUP_MAIN_SET].Create(T("Ustawienia"), 225, 30, 240, 200, BS_GROUPBOX, 0, T("BUTTON"));
+		auto& Buttons	= Window.Widgets.Buttons;
+		auto& Checks	= Window.Widgets.Checks;
+		auto& Bars	= Window.Widgets.Tracks;
+		auto& Edits	= Window.Widgets.Edits;
+		auto& Labels	= Window.Widgets.Labels;
+		auto& Tables	= Window.Widgets.Tables;
 
 		Tables.Add(CTR_TABLE_VAR);
 		Tables.Add(CTR_TABLE_CLI);
 
 		unsigned puVarSize[] = {120, 70};
-		unsigned puCliSize[] = {100, 330};
+		unsigned puCliSize[] = {100, 320};
 
-		Tables[CTR_TABLE_VAR].Create(10, 30, 200, 250);
-		Tables[CTR_TABLE_VAR].SetHeader(Containers::Strings(T("Zmienna\nWartoœæ")), Containers::Vector<unsigned>(puVarSize, 2));
+		Tables[CTR_TABLE_VAR].Create(5, 5, 200, 250);
+		Tables[CTR_TABLE_VAR].SetHeader(Containers::Strings(T("Zmienna\nWartoÅ›Ä‡")), Containers::Vector<unsigned>(puVarSize, 2));
 
-		Tables[CTR_TABLE_CLI].Create(10, 290, 460, 205);
-		Tables[CTR_TABLE_CLI].SetHeader(Containers::Strings(T("ID\nAdres po³¹czenia")), Containers::Vector<unsigned>(puCliSize, 2));
+		Tables[CTR_TABLE_CLI].Create(5, 310, 430, 205);
+		Tables[CTR_TABLE_CLI].SetHeader(Containers::Strings(T("ID\nAdres poÅ‚Ä…czenia")), Containers::Vector<unsigned>(puCliSize, 2));
 
 		foreach(mVars){
 
@@ -264,6 +254,8 @@ void ServerCore::OnVarChange(const STR& sVar, int iValue)
 	mVars[sVar] = iValue;
 
 	for (int i = 1; i <= sSrv.Capacity(); i++) sSrv.GetClient(i) << sMessage;
+
+	if (Window) Window.Widgets.Tables[CTR_TABLE_VAR].SetItemData(S iValue, 2, mVars.FindKey(sVar));
 
 }
 

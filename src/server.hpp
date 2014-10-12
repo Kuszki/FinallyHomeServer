@@ -73,12 +73,6 @@ using namespace KuszkAPI;
          *
          */ BOOL bDebug;
 
-        /*! \brief Widgety aplikacji.
-         *
-         *  Reprezentuje wsztstkie kontrolki o ile są używane.
-         *
-         */ Forms::Controls* Widgets;
-
     public:
 
         /*! \brief Konsola.
