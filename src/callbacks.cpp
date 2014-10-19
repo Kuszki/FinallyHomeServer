@@ -112,10 +112,6 @@ LRESULT WINAPI WindowHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
      WND* fWnd = (WND*) GetWindowLong(hWnd, 0);
 
      switch (uMsg){
-          case WM_CREATEWINDOW:
-
-          break;
-
           case WM_DESTROY:
 
                Eng.Stop();
@@ -182,9 +178,59 @@ LRESULT WINAPI WindowHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 							if (dDialog.GetFileSave(T(".ini"), T("Pliki konfiguracyjne\0*.ini\0"))) Eng.SaveSettings(dDialog.GetLastFile().Full);
 						}
 						break;
+						case CTR_CHK_CONS:
+							Eng.Console.Show(fWnd->Widgets.Checks[LOWORD(wParam)].GetCheck());
+						break;
+						case CTR_CHK_DEBUG:
+						{
+							STR sMessage = T("rcon debug ");
+
+							sMessage += S (unsigned) fWnd->Widgets.Checks[LOWORD(wParam)].GetCheck();
+
+							Eng.OnRead(sMessage);
+						}
+						break;
+						case CTR_CHK_LISTEN:
+						{
+							STR sMessage = T("rcon ");
+
+							sMessage += fWnd->Widgets.Checks[LOWORD(wParam)].GetCheck() ? T("listen") : T("shutdown");
+
+							Eng.OnRead(sMessage);
+						}
+						break;
+						case CTR_CHK_SLO:
+						case CTR_CHK_SBO:
+						case CTR_CHK_SHO:
+						case CTR_CHK_PLO:
+						case CTR_CHK_PDC:
+						{
+							STR sMessage = T("set ");
+
+							sMessage += Eng.GetControlVar(LOWORD(wParam));
+							sMessage += fWnd->Widgets.Checks[LOWORD(wParam)].GetCheck() ? T(" 1") : T(" 0");
+
+							Eng.OnRead(sMessage);
+						}
+						break;
                          }
                     break;
                }
+          break;
+
+          case WM_HSCROLL:
+			switch (LOWORD(wParam)){
+				case SB_ENDSCROLL:
+				{
+					STR sMessage = T("set ");
+
+					sMessage += Eng.GetControlVar((INT) GetMenu((HWND) lParam)) + T(" ");
+					sMessage += fWnd->Widgets.Tracks[(INT) GetMenu((HWND) lParam)].GetValue();
+
+					Eng.OnRead(sMessage);
+				}
+				break;
+			}
           break;
 
           case WM_CTLCOLORSTATIC:

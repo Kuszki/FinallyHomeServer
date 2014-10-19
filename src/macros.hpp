@@ -40,35 +40,35 @@ Zawiera deklaracje wszystkich ważnych macr.
 // Controls ID's
 #define CTR_TAB_CATS		101												//!< Identyfikator kontrolki zakładek.
 
-#define CTR_TABLE_VAR		201
-#define CTR_TABLE_CLI		202
+#define CTR_TABLE_VAR		201												//!< Identyfikator kontrolki tabeli zmiennych.
+#define CTR_TABLE_CLI		202												//!< Identyfikator kontrolki tabeli klientów.
 
-#define CTR_BTN_ID			300
-#define CTR_BTN_LOAD		301
-#define CTR_BTN_SAVE		302
-#define CTR_BTN_KICK		303
-#define CTR_BTN_RESET		304
-#define CTR_BTN_HELP		305
-#define CTR_BTN_ABOUT		306
+#define CTR_BTN_ID			300												//!< Identyfikator początku indeksów przycisków.
+#define CTR_BTN_LOAD		301												//!< Identyfikator kontrolki przycisku "Wczytaj".
+#define CTR_BTN_SAVE		302												//!< Identyfikator kontrolki przycisku "Zapisz".
+#define CTR_BTN_KICK		303												//!< Identyfikator kontrolki przycisku "Rozłącz".
+#define CTR_BTN_RESET		304												//!< Identyfikator kontrolki przycisku "Restart".
+#define CTR_BTN_HELP		305												//!< Identyfikator kontrolki przycisku "Pomoc".
+#define CTR_BTN_ABOUT		306												//!< Identyfikator kontrolki przycisku "O programie".
 
-#define CTR_CHK_LISTEN		401
-#define CTR_CHK_CONS		402
-#define CTR_CHK_DEBUG		403
+#define CTR_CHK_LISTEN		401												//!< Identyfikator kontrolki pola "Nasłuchiwanie".
+#define CTR_CHK_CONS		402												//!< Identyfikator kontrolki pola "Konsola".
+#define CTR_CHK_DEBUG		403												//!< Identyfikator kontrolki pola "Debug".
 
-#define CTR_CHK_SLO			411
-#define CTR_CHK_SBO			412
-#define CTR_CHK_SHO			413
+#define CTR_CHK_SLO			411												//!< Identyfikator kontrolki pola "salon.lights.on".
+#define CTR_CHK_SBO			412												//!< Identyfikator kontrolki pola "salon.blinds.on".
+#define CTR_CHK_SHO			413												//!< Identyfikator kontrolki pola "salon.heat.on".
 
-#define CTR_CHK_PLO			421
-#define CTR_CHK_PDC			422
+#define CTR_CHK_PLO			421												//!< Identyfikator kontrolki pola "porch.light.on".
+#define CTR_CHK_PDC			422												//!< Identyfikator kontrolki pola "doors.lock".
 
-#define CTR_BAR_SLP			511
-#define CTR_BAR_SBP			512
-#define CTR_BAR_SHP			513
+#define CTR_BAR_SLP			511												//!< Identyfikator kontrolki paska "salon.light.power".
+#define CTR_BAR_SBP			512												//!< Identyfikator kontrolki paska "salon.blinds.power".
+#define CTR_BAR_SHP			513												//!< Identyfikator kontrolki paska "salon.heat.set".
 
-#define CTR_BAR_PLP			521
+#define CTR_BAR_PLP			521												//!< Identyfikator kontrolki paska "porch.light.power".
 
 // Resources ID's
-#define IDI_MAIN			1001
+#define IDI_MAIN			1001												//!< Identyfikator zasobu ikony programu.
 
 #endif

@@ -9,7 +9,7 @@
 *********************************************/
 
 /*! \file
-    \brief Plik zawieraj¹cy definicje dla modu³u "core".
+    \brief Plik zawierajÄ…cy definicje dla moduÅ‚u "core".
 
 Zawiera implementacje klasy ServerCore.
 */
@@ -56,6 +56,7 @@ void ServerCore::Initiate(Containers::Strings sParams)
 
 	bool bInterface	=	false;
 	bool bWindow		=	false;
+	bool bConsole		=	false;
 
 	foreach(sParams){
 
@@ -63,7 +64,7 @@ void ServerCore::Initiate(Containers::Strings sParams)
 
 		if (sParams[i].Find(T("--config="))) sConfig = Containers::Strings(sParams[i], T('='))[2];
 
-		if (sParams[i] == T("--console")) Console.Show(), bInterface = true;
+		if (sParams[i] == T("--console")) Console.Show(), bConsole = bInterface = true;
 
 		if (sParams[i] == T("--window")) bWindow = bInterface = true;
 
@@ -91,30 +92,33 @@ void ServerCore::Initiate(Containers::Strings sParams)
 		unsigned puVarSize[] = {120, 70};
 		unsigned puCliSize[] = {80, 200};
 
-		Tables.Add(CTR_TABLE_VAR).Create(5, 5, 200, 250).SetHeader(Containers::Strings(T("Zmienna\nWartoœæ")), Containers::Vector<unsigned>(puVarSize, 2));
+		Tables.Add(CTR_TABLE_VAR).Create(5, 5, 200, 250).SetHeader(Containers::Strings(T("Zmienna\nWartoÅ›Ä‡")), Containers::Vector<unsigned>(puVarSize, 2));
 
-		Tables.Add(CTR_TABLE_CLI).Create(5, 260, 300, 255).SetHeader(Containers::Strings(T("ID\nAdres po³¹czenia")), Containers::Vector<unsigned>(puCliSize, 2));
+		Tables.Add(CTR_TABLE_CLI).Create(5, 260, 300, 255).SetHeader(Containers::Strings(T("ID\nAdres poÅ‚Ä…czenia")), Containers::Vector<unsigned>(puCliSize, 2));
 
-		const TCHAR* ppcButtons[] = {T("Wczytaj zmienne"), T("Zapisz zmienne"), T("Roz³¹cz klienta"), T("Restart serwera"), T("Pomoc"), T("O programie")};
+		const TCHAR* ppcButtons[] = {T("Wczytaj zmienne"), T("Zapisz zmienne"), T("RozÅ‚Ä…cz klienta"), T("Restart serwera"), T("Pomoc"), T("O programie")};
 
 		for (int i = 0; i < 6; i++) Buttons.Add(CTR_BTN_ID + i + 1).Create(ppcButtons[i], 310, 260 + i*40 + (i > 3 ? 20 : 0), 130, 35);
 
-		Tabs.Add(CTR_TAB_CATS).Create(210, 5, 230, 250, Containers::Strings("Sterowanie\nSalon\nPrzedpokój"));
+		Tabs.Add(CTR_TAB_CATS).Create(210, 5, 230, 250, Containers::Strings("Sterowanie\nSalon\nPrzedpokÃ³j"));
 
-		Tabs[CTR_TAB_CATS].AddControl(Checks.Add(CTR_CHK_LISTEN).Create(T("Nas³uchiwanie"), 220, 35, 210, 15, BS_RIGHTBUTTON | BS_LEFT), 1);
+		Tabs[CTR_TAB_CATS].AddControl(Checks.Add(CTR_CHK_LISTEN).Create(T("NasÅ‚uchiwanie"), 220, 35, 210, 15, BS_RIGHTBUTTON | BS_LEFT), 1);
 		Tabs[CTR_TAB_CATS].AddControl(Checks.Add(CTR_CHK_CONS).Create(T("Konsola"), 220, 60, 210, 15, BS_RIGHTBUTTON | BS_LEFT), 1);
 		Tabs[CTR_TAB_CATS].AddControl(Checks.Add(CTR_CHK_DEBUG).Create(T("Debugowanie"), 220, 85, 210, 15, BS_RIGHTBUTTON | BS_LEFT), 1);
 
-		Tabs[CTR_TAB_CATS].AddControl(Checks.Add(CTR_CHK_SLO).Create(T("Œwiat³o"), 220, 35, 210, 15, BS_RIGHTBUTTON | BS_LEFT), 2);
+		Tabs[CTR_TAB_CATS].AddControl(Checks.Add(CTR_CHK_SLO).Create(T("ÅšwiatÅ‚o"), 220, 35, 210, 15, BS_RIGHTBUTTON | BS_LEFT), 2);
 		Tabs[CTR_TAB_CATS].AddControl(Bars.Add(CTR_BAR_SLP).Create(220, 55, 210, 25, 1, 9), 2);
-		Tabs[CTR_TAB_CATS].AddControl(Checks.Add(CTR_CHK_SBO).Create(T("Zas³ony"), 220, 95, 210, 15, BS_RIGHTBUTTON | BS_LEFT), 2);
+		Tabs[CTR_TAB_CATS].AddControl(Checks.Add(CTR_CHK_SBO).Create(T("ZasÅ‚ony"), 220, 95, 210, 15, BS_RIGHTBUTTON | BS_LEFT), 2);
 		Tabs[CTR_TAB_CATS].AddControl(Bars.Add(CTR_BAR_SBP).Create(220, 115, 210, 25, 1, 9), 2);
 		Tabs[CTR_TAB_CATS].AddControl(Checks.Add(CTR_CHK_SBO).Create(T("Ogrzewanie"), 220, 155, 210, 15, BS_RIGHTBUTTON | BS_LEFT), 2);
 		Tabs[CTR_TAB_CATS].AddControl(Bars.Add(CTR_BAR_SHP).Create(220, 175, 210, 25, 15, 30), 2);
 
-		Tabs[CTR_TAB_CATS].AddControl(Checks.Add(CTR_CHK_PLO).Create(T("Œwiat³o"), 220, 35, 210, 15, BS_RIGHTBUTTON | BS_LEFT), 3);
+		Tabs[CTR_TAB_CATS].AddControl(Checks.Add(CTR_CHK_PLO).Create(T("ÅšwiatÅ‚o"), 220, 35, 210, 15, BS_RIGHTBUTTON | BS_LEFT), 3);
 		Tabs[CTR_TAB_CATS].AddControl(Bars.Add(CTR_BAR_PLP).Create(220, 55, 210, 25, 1, 9), 3);
 		Tabs[CTR_TAB_CATS].AddControl(Checks.Add(CTR_CHK_PDC).Create(T("Blokada drzwi"), 220, 95, 210, 15, BS_RIGHTBUTTON | BS_LEFT), 3);
+
+		Checks[CTR_CHK_CONS].SetCheck(bConsole);
+		Checks[CTR_CHK_DEBUG].SetCheck(bDebug);
 
 		INI iConfig(T("../conf/controls.ini"));
 
@@ -157,6 +161,8 @@ bool ServerCore::Start(void)
 
 	Console << (bOK ? T("[OK]\n") : T("[FAIL]\n"));
 
+	if (bOK && Window) Window.Widgets.Checks[CTR_CHK_LISTEN].SetCheck(true);
+
 	return bOK;
 
 }
@@ -174,7 +180,7 @@ bool ServerCore::Stop(void)
 
 	Console << T("[OK]\n");
 
-	if (Window) Window.Widgets.Tables[CTR_TABLE_CLI].CleanItems();
+	if (Window) Window.Widgets.Tables[CTR_TABLE_CLI].CleanItems(), Window.Widgets.Checks[CTR_CHK_LISTEN].SetCheck(false);
 
 	return true;
 
@@ -205,15 +211,26 @@ bool ServerCore::LoadSettings(const STR& sFile)
 
 	IF_DEBUG Console << T("\n >> Wczytuje wartosci zmiennych z pliku '") << sFile << T("'\n");
 
+	auto mTmpVars = iConfig.GetIntValues(T("VARS"));
+	auto mTmpSets = iConfig.GetIntValues(T("SRV"));
+
+	if (!mTmpVars || !mTmpSets){
+
+		IF_DEBUG Console << T("\n << Blad przy wczytywaniu wartosci\n");
+
+		return false;
+
+	}
+
 	IF_DEBUG Console << T("\nZmienne projektu:\n\n");
 
-	mVars = iConfig.GetIntValues(T("VARS"));
+	mVars = mTmpVars;
 
 	IF_DEBUG foreach(mVars) Console << T("\t") << mVars.GetKey(i) << T(" = ") << mVars.GetDataByInt(i) << T("\n");
 
 	IF_DEBUG Console << T("\nZmienne programu:\n\n");
 
-	mSets = iConfig.GetIntValues(T("SRV"));
+	mSets = mTmpSets;
 
 	IF_DEBUG foreach(mSets) Console << T("\t") << mSets.GetKey(i) << T(" = ") << mSets.GetDataByInt(i) << T("\n");
 
@@ -303,6 +320,8 @@ void ServerCore::OnVarChange(const STR& sVar, int iValue, bool bRemote)
 
 	}
 
+	if (bRemote) Console << sMessage;
+
 }
 
 void ServerCore::OnRead(const STR& sMessage, SOCKET sClient)
@@ -327,6 +346,11 @@ void ServerCore::OnRead(const STR& sMessage, SOCKET sClient)
 
 	LeaveSection(CORE_SECTION);
 
+}
+
+const STR& ServerCore::GetControlVar(INT iControl) const
+{
+	foreach(mCtrls) if (mCtrls.GetDataByInt(i) == iControl) return mCtrls.GetKey(i);
 }
 
 template<typename tnTerminal>
@@ -386,7 +410,7 @@ void ServerCore::Interpret(unsigned uCode, Containers::Strings& sParams, tnTermi
 
 			else if (sParams[1] == T("set") && sParams.Capacity() == 3) mSets[sParams[2]] = (int) sParams[3];
 
-			else if (sParams[1] == T("debug") && sParams.Capacity() == 2) bDebug = (int) sParams[2];
+			else if (sParams[1] == T("debug") && sParams.Capacity() == 2) { bDebug = (int) sParams[2]; if (Window) Window.Widgets.Checks[CTR_CHK_DEBUG].SetCheck(bDebug); }
 
 			else if (sParams[1] == T("kick") && sParams.Capacity() == 2) Disconnect((int) sParams[2]);
 

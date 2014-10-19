@@ -94,7 +94,8 @@ using namespace KuszkAPI;
          */ WND& Window;
 
         /*! \brief Domyślny konstruktor klasy.
-         *  \param [in] bDbg Włącza komunikaty debugowania.
+         *  \param [in, out] cCon Referencja do konsoli użytej w programie.
+         *  \param [in, out] wWnd Referencja do okna użytego w programie.
          *
          *  Tworzy sekcje krytyczne i obiekty potrzebne do pracy serwera.
          *
@@ -175,7 +176,6 @@ using namespace KuszkAPI;
 
         /*! \brief Zdarzenie wywoływane gdy nastąpi połączenie klienta.
          *  \param [in] sClient Identyfikator gniazda klienta.
-         *  \todo Należy przemyśleć działanie programu w przypadku połączenia więcej niż jednego klienta.
          *
          *  Zapisuje parametry połączenia z klientem.
          *
@@ -205,6 +205,14 @@ using namespace KuszkAPI;
          *  Odbiera dane od klienta i przekazuje je do parsera.
          *
          */ void OnRead(const STR& sMessage, SOCKET sClient = 0);
+
+        /*! \brief Zwraca nazwę zmiennej do której przyporządkowany jest podany identyfikator widgetu.
+         *  \param [in] iControl ID kontrolki.
+         *  \return Nazwa zmiennej odpowiadająca kontrolce.
+         *
+         *  Wyszukuje nazwy zmiennej przyporządkowanej do podanej kontrolki.
+         *
+         */ const STR& GetControlVar(INT iControl) const;
 
         /*! \brief Parsuje wejście z konsoli lub gniazda i przekazuje wynik parsingu do interpretera.
          *  \tparam tnTerminal Rodzaj terminala.
