@@ -43,8 +43,32 @@ Zawiera deklaracje wszystkich ważnych macr.
 #define CTR_TABLE_VAR		201
 #define CTR_TABLE_CLI		202
 
+#define CTR_BTN_ID			300
 #define CTR_BTN_LOAD		301
 #define CTR_BTN_SAVE		302
 #define CTR_BTN_KICK		303
+#define CTR_BTN_RESET		304
+#define CTR_BTN_HELP		305
+#define CTR_BTN_ABOUT		306
+
+#define CTR_CHK_LISTEN		401
+#define CTR_CHK_CONS		402
+#define CTR_CHK_DEBUG		403
+
+#define CTR_CHK_SLO			411
+#define CTR_CHK_SBO			412
+#define CTR_CHK_SHO			413
+
+#define CTR_CHK_PLO			421
+#define CTR_CHK_PDC			422
+
+#define CTR_BAR_SLP			511
+#define CTR_BAR_SBP			512
+#define CTR_BAR_SHP			513
+
+#define CTR_BAR_PLP			521
+
+// Resources ID's
+#define IDI_MAIN			1001
 
 #endif

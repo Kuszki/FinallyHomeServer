@@ -3,5 +3,7 @@
 
 /doc/*
 !/doc/doxyfile
+!/doc/license.txt
+!/doc/info.txt
 
 /obj/*

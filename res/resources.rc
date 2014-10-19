@@ -1,0 +1,4 @@
+#include "../src/macros.hpp"
+
+A ICON "res/main.ico"
+IDI_MAIN ICON "res/main.ico"

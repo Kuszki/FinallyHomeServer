@@ -43,6 +43,12 @@ using namespace KuszkAPI;
          *
          */ MAP<INT, STR> mSets;
 
+        /*! \brief Kontener na identyfikatory kontrolek.
+         *
+         *  Mapa przechowująca wszystkie dostępne w programie kontrolki powiązane z podstawowymi zmiennymi.
+         *
+         */ MAP<INT, STR> mCtrls;
+
         /*! \brief Instancja serwera.
          *
          *  Odpowiada za nadzorowanie ruchu sieciowego.
@@ -185,11 +191,12 @@ using namespace KuszkAPI;
         /*! \brief Zdarzenie wywoływane gdy nastąpi zmiana wartości zmiennej projektu.
          *  \param [in] sVar Nazwa zmiennej.
          *  \param [in] iValue Nowa wartość zmiennej.
+         *  \param [in] bRemote Określa czy zdarzenie zostało wywołane zdalnie (nie przez serwer).
          *  \todo Zaimplementować biblioteke zewnętrzną.
          *
          *  Metoda parsuje nazwę zmiennej, a następnie przekazuje jej identyfikator i nową wartość do odpowiedniej funkcji z biblioteki zewnętrznej.
          *
-         */ void OnVarChange(const STR& sVar, int iValue);
+         */ void OnVarChange(const STR& sVar, int iValue, bool bRemote = true);
 
         /*! \brief Zdarzenie wywoływane gdy serwer odbierze komunikat od klienta.
          *  \param [in] sMessage Odebrane dane.
