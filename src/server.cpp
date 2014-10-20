@@ -110,7 +110,7 @@ void ServerCore::Initiate(Containers::Strings sParams)
 		Tabs[CTR_TAB_CATS].AddControl(Bars.Add(CTR_BAR_SLP).Create(220, 55, 210, 25, 1, 9), 2);
 		Tabs[CTR_TAB_CATS].AddControl(Checks.Add(CTR_CHK_SBO).Create(T("Zasłony"), 220, 95, 210, 15, BS_RIGHTBUTTON | BS_LEFT), 2);
 		Tabs[CTR_TAB_CATS].AddControl(Bars.Add(CTR_BAR_SBP).Create(220, 115, 210, 25, 1, 9), 2);
-		Tabs[CTR_TAB_CATS].AddControl(Checks.Add(CTR_CHK_SBO).Create(T("Ogrzewanie"), 220, 155, 210, 15, BS_RIGHTBUTTON | BS_LEFT), 2);
+		Tabs[CTR_TAB_CATS].AddControl(Checks.Add(CTR_CHK_SHO).Create(T("Ogrzewanie"), 220, 155, 210, 15, BS_RIGHTBUTTON | BS_LEFT), 2);
 		Tabs[CTR_TAB_CATS].AddControl(Bars.Add(CTR_BAR_SHP).Create(220, 175, 210, 25, 15, 30), 2);
 
 		Tabs[CTR_TAB_CATS].AddControl(Checks.Add(CTR_CHK_PLO).Create(T("Światło"), 220, 35, 210, 15, BS_RIGHTBUTTON | BS_LEFT), 3);

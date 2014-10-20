@@ -1,1 +1,10 @@
-TODO info.txt
+Program "FinallyHome Server v1.0"
+Copyright (C) 2014 KuszkiDevGroup
+
+	Strona projektu: https://github.com/Kuszki/FinallyHomeServer
+	E-mail autora: l.drozdz@o2.pl
+	Licencja: GNU GPL V2
+
+Powered by KuszkAPI Engine v2.2
+
+Jeœli znalaz³eœ istatne b³êdy zg³oœ ten fakt na bugtrackerze (podany link).
