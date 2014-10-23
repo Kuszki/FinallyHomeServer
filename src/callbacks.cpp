@@ -36,6 +36,9 @@ LRESULT ServerHandler(SRV& srv, UINT event, SOCKET id)
 
           case FD_ACCEPT:
           {
+
+               Eng.EnterSection(SOCK_SECTION);
+
                Eng.OnConnect(id);
 
                char pcEcho[] = {255, 252, 1};
@@ -48,6 +51,8 @@ LRESULT ServerHandler(SRV& srv, UINT event, SOCKET id)
                srv[id] << PROMPT;
 
                mBuffer.Add(T(""), id);
+
+               Eng.LeaveSection(SOCK_SECTION);
 
 		}
           break;
@@ -78,9 +83,13 @@ LRESULT ServerHandler(SRV& srv, UINT event, SOCKET id)
 
 		case FD_CLOSE:
 
+			Eng.EnterSection(SOCK_SECTION);
+
 			Eng.OnDisconnect(id);
 
 			mBuffer.Delete(id);
+
+			Eng.LeaveSection(SOCK_SECTION);
 
 		break;
 	}

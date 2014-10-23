@@ -134,7 +134,7 @@ void ServerCore::Initiate(Containers::Strings sParams)
 
 	if (LoadSettings(sConfig)) Start();
 
-	if (Console.Visible()) tThr.Start(CONS_SECTION, this);
+	tThr.Start(CONS_SECTION, this);
 
 }
 

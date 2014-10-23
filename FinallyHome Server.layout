@@ -4,8 +4,8 @@ Order=-1
 [Editor_0]
 Open=1
 Top=1
-CursorCol=99
-CursorRow=14
+CursorCol=1
+CursorRow=16
 TopLine=1
 LeftChar=1
 [Editor_1]
@@ -31,6 +31,10 @@ Top=0
 [Editor_5]
 Open=0
 Top=0
+CursorCol=26
+CursorRow=11
+TopLine=1
+LeftChar=1
 [Editor_6]
 Open=0
 Top=0
