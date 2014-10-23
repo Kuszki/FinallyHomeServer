@@ -52,6 +52,8 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
 {
      MSG mMsg;
 
+     Core::Instance::ResetPath();
+
      Eng.Initiate(Containers::Strings(lpszArgument, T(' '), true));
 
      while (GetMessage(&mMsg, NULL, 0, 0)){
