@@ -7,6 +7,7 @@ Dołączany do KuszkAPI.cpp za pomocą odpowiedniej definicji umożliwia skompil
 template class MAP<int, STR>;
 template class MAP<STR, int>;
 template class MAP<STR, unsigned>;
+template class DLL;
 
 template class ARA<char>;
 
