@@ -46,4 +46,13 @@ Zawiera deklaracje funkcji ServerHandler oraz ConsoleHandler.
  *
  */ LRESULT WINAPI WindowHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+/*! \brief Funkcja zwrotna portu RS232.
+ *  \param [in] uDev Identyfikator urządzenia.
+ *  \param [in] uSet Stan urządzenia.
+ *  \return Numer błędu.
+ *
+ *  Pozwala obsługiwać zdarzenie zmiany stanu urządzenia.
+ *
+ */ unsigned ComportHandler(unsigned uDev, unsigned uSet);
+
 #endif

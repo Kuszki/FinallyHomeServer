@@ -29,7 +29,17 @@ using namespace KuszkAPI;
  */ class ServerCore
 {
 
-    protected:
+	protected:
+
+		typedef void		(*COMPORT_SET)(unsigned uDev, unsigned uSet);	//!< Prototyp funkcji ustawiającej urządzenie.
+		typedef unsigned	(*COMPORT_START)(unsigned uPort, void* pvProc);	//!< Prototyp funkcji rozpoczynającej nasłuchiwanie.
+		typedef void		(*COMPORT_STOP)(void);						//!< Prototyp funkcji kończącej nasłuchiwanie.
+
+        /*! \brief Biblioteki.
+         *
+         *  Odpowiada za ładowanie zewnętrznych bibliotek.
+         *
+         */ DLL dDll;
 
         /*! \brief Kontener na zmienne projektu.
          *
@@ -48,6 +58,12 @@ using namespace KuszkAPI;
          *  Mapa przechowująca wszystkie dostępne w programie kontrolki powiązane z podstawowymi zmiennymi.
          *
          */ MAP<INT, STR> mCtrls;
+
+        /*! \brief Kontener na identyfikatory urządzeń.
+         *
+         *  Mapa przechowująca wszystkie dostępne w programie urządzenia powiązane z podstawowymi zmiennymi.
+         *
+         */ MAP<INT, STR> mDevs;
 
         /*! \brief Instancja serwera.
          *
@@ -191,12 +207,12 @@ using namespace KuszkAPI;
         /*! \brief Zdarzenie wywoływane gdy nastąpi zmiana wartości zmiennej projektu.
          *  \param [in] sVar Nazwa zmiennej.
          *  \param [in] iValue Nowa wartość zmiennej.
-         *  \param [in] bRemote Określa czy zdarzenie zostało wywołane zdalnie (nie przez serwer).
+         *  \param [in] uFlags Określa flagi wywołania zdarzenia.
          *  \todo Zaimplementować biblioteke zewnętrzną.
          *
          *  Metoda parsuje nazwę zmiennej, a następnie przekazuje jej identyfikator i nową wartość do odpowiedniej funkcji z biblioteki zewnętrznej.
          *
-         */ void OnVarChange(const STR& sVar, int iValue, bool bRemote = true);
+         */ void OnVarChange(const STR& sVar, int iValue, unsigned uFlags = SET_REMOTE);
 
         /*! \brief Zdarzenie wywoływane gdy serwer odbierze komunikat od klienta.
          *  \param [in] sMessage Odebrane dane.
@@ -205,6 +221,14 @@ using namespace KuszkAPI;
          *  Odbiera dane od klienta i przekazuje je do parsera.
          *
          */ void OnRead(const STR& sMessage, SOCKET sClient = 0);
+
+        /*! \brief Zdarzenie wywoływane gdy serwer odbierze komunikat od urządzenia.
+         *  \param [in] uDev ID urządzenia.
+         *  \param [in] uSet Wartość do nastawienia.
+         *
+         *  Odbiera dane od urządzenia i przekazuje je do parsera.
+         *
+         */ void OnSet(unsigned uDev, unsigned uSet);
 
         /*! \brief Zwraca nazwę zmiennej do której przyporządkowany jest podany identyfikator widgetu.
          *  \param [in] iControl ID kontrolki.

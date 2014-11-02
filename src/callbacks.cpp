@@ -253,7 +253,18 @@ LRESULT WINAPI WindowHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
           default: return DefWindowProc(hWnd, uMsg, wParam, lParam);
-    }
+	}
 
-    return 0;
+	return 0;
+}
+
+unsigned ComportHandler(unsigned uDev, unsigned uSet)
+{
+	//STR sMsg = S uDev + S ":" + S uSet;
+
+	//MessageBox(NULL, sMsg.Str(), "CALLBACK", 0);
+
+	Eng.OnSet(uDev, uSet);
+
+	return 0;
 }

@@ -22,6 +22,11 @@ Zawiera deklaracje wszystkich ważnych macr.
 #define IF_DEBUG 			if (bDebug)										//!< Skrócone wywołanie konstrukcji warunkowej.
 #define APP_TITLE			STR(T(PRODUCT_NAME)) + STR(T(" v")) + STR(T(VER_STRING))	//!< Tytuł aplikacji.
 
+// OnVarChange Flags
+#define SET_REMOTE			0												//!< Wyoyłanie zdalne.
+#define SET_COMPORT			1												//!< Wywołanie przez urządzenie.
+#define SET_LOCAL			2												//!< Wywołanie lokalne.
+
 // Critical sections ID's
 #define SOCK_SECTION		1												//!< Identyfikator sekcji krytycznej gniazda.
 #define CONS_SECTION		2												//!< Identyfikator sekcji krytycznej konsoli.

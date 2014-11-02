@@ -120,15 +120,17 @@ void ServerCore::Initiate(Containers::Strings sParams)
 		Checks[CTR_CHK_CONS].SetCheck(bConsole);
 		Checks[CTR_CHK_DEBUG].SetCheck(bDebug);
 
-		INI iConfig(T("../conf/controls.ini"));
-
-		mCtrls = iConfig.GetIntValues(T("IDS"));
+		mCtrls = INI(T("../conf/controls.ini")).GetIntValues(T("IDS"));
 
 		Tabs[CTR_TAB_CATS].SetTab();
 
 		Window.Show();
 
 	}
+
+	mDevs = INI(T("../conf/devs.ini")).GetIntValues(T("IDS"));
+
+	dDll.Load(1, T("rs_lib.dll"));
 
 	if (!bInterface) Console.Show();
 
@@ -155,11 +157,23 @@ void ServerCore::LeaveSection(unsigned uSection)
 bool ServerCore::Start(void)
 {
 
-	Console << T("\n >> Uruchamiam serwer\t");
+	auto fProc = (COMPORT_START) dDll.GetFunction(1, T("start_Listening"));
+
+	Console << T("\n >> Uruchamiam serwer...\t");
 
 	bool bOK = sSrv.Listen(mSets[S T("port")], ServerHandler);
 
 	Console << (bOK ? T("[OK]\n") : T("[FAIL]\n"));
+
+	if (fProc) if (!fProc(mSets[S T("comport")], (void*) ComportHandler)){
+
+		Console << T("\n >> Nawiazano polaczenie z urzadzeniem\t");
+
+		auto fSet = (COMPORT_SET) dDll.GetFunction(1, T("set_State"));
+
+		if (fSet) foreach(mDevs) fSet(mDevs.GetDataByInt(i), (mDevs.GetDataByInt(i) < 10 ? mVars[mDevs.GetKey(i)] : 100));
+
+	}
 
 	if (bOK && Window) Window.Widgets.Checks[CTR_CHK_LISTEN].SetCheck(true);
 
@@ -170,11 +184,15 @@ bool ServerCore::Start(void)
 bool ServerCore::Stop(void)
 {
 
+	auto fProc = (COMPORT_STOP) dDll.GetFunction(1, T("stop_Listening"));
+
 	Console << T("\n >> Wylaczam serwer...\t");
 
 	EnterSection(CORE_SECTION);
 
 	sSrv.Shutdown();
+
+	if (fProc) fProc();
 
 	LeaveSection(CORE_SECTION);
 
@@ -253,7 +271,7 @@ bool ServerCore::LoadSettings(const STR& sFile)
 
 	}
 
-	foreach(mVars) OnVarChange(mVars.GetKey(i), mVars.GetDataByInt(i), false);
+	foreach(mVars) OnVarChange(mVars.GetKey(i), mVars.GetDataByInt(i), SET_LOCAL);
 
 	return mSets && mVars;
 
@@ -302,25 +320,33 @@ void ServerCore::OnDisconnect(SOCKET sClient)
 
 }
 
-void ServerCore::OnVarChange(const STR& sVar, int iValue, bool bRemote)
+void ServerCore::OnVarChange(const STR& sVar, int iValue, unsigned uFlags)
 {
 
 	STR sMessage = S T("set ") + sVar + S T(" ") + S iValue + S T("\r\n");
 
-	if (bRemote) mVars[sVar] = iValue;
+	if (uFlags == SET_REMOTE || uFlags == SET_COMPORT) mVars[sVar] = iValue;
 
 	for (int i = 1; i <= sSrv.Capacity(); i++) sSrv.GetClient(i) << sMessage;
 
 	if (Window){
 
-		if (bRemote) Window.Widgets.Tables[CTR_TABLE_VAR].SetItemData(S iValue, 2, mVars.FindKey(sVar));
+		if (uFlags == SET_REMOTE || uFlags == SET_COMPORT) Window.Widgets.Tables[CTR_TABLE_VAR].SetItemData(S iValue, 2, mVars.FindKey(sVar));
 
 		if (mCtrls) if (mCtrls.Contain(sVar)) if (mCtrls[sVar] > 500) Window.Widgets.Tracks[mCtrls[sVar]].SetValue(iValue);
 		else Window.Widgets.Checks[mCtrls[sVar]].SetCheck(iValue);
 
 	}
 
-	if (bRemote) Console << sMessage;
+	if (uFlags != SET_COMPORT){
+
+		auto fSet = (COMPORT_SET) dDll.GetFunction(1, T("set_State"));
+
+		if (fSet) fSet(mDevs[sVar], iValue);
+
+	}
+
+	if (uFlags == SET_REMOTE || uFlags == SET_COMPORT) Console << sMessage;
 
 }
 
@@ -346,6 +372,11 @@ void ServerCore::OnRead(const STR& sMessage, SOCKET sClient)
 
 	LeaveSection(CORE_SECTION);
 
+}
+
+void ServerCore::OnSet(unsigned uDev, unsigned uSet)
+{
+	foreach(mDevs) if (mDevs.GetDataByInt(i) == uDev) OnVarChange(mDevs.GetKey(i), uSet, SET_COMPORT);
 }
 
 const STR& ServerCore::GetControlVar(INT iControl) const
