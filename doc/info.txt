@@ -7,4 +7,4 @@ Copyright (C) 2014 KuszkiDevGroup
 
 Powered by KuszkAPI Engine v2.2
 
-Jeœli znalaz³eœ istatne b³êdy zg³oœ ten fakt na bugtrackerze (podany link).
+Jeœli znalaz³eœ istotne b³êdy zg³oœ ten fakt na bugtrackerze (podany link).

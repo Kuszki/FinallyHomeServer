@@ -171,7 +171,7 @@ bool ServerCore::Start(void)
 
 		auto fSet = (COMPORT_SET) dDll.GetFunction(1, T("set_State"));
 
-		if (fSet) foreach(mDevs) fSet(mDevs.GetDataByInt(i), (mDevs.GetDataByInt(i) < 10 ? mVars[mDevs.GetKey(i)] : 100));
+		if (fSet) if (mSets[S T("action"])) foreach(mDevs) fSet(mDevs.GetDataByInt(i), (mDevs.GetDataByInt(i) < 50 ? mVars[mDevs.GetKey(i)] : 100)); else foreach(mDevs) fSet(mDevs.GetDataByInt(i), 100);
 
 	}
 
