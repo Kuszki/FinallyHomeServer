@@ -25,7 +25,7 @@ Implementuje funkcje ServerHandler i ConsoleHandler.
 
 extern ServerCore Eng;
 
-HBRUSH g_hBkgnd = CreateSolidBrush(RGB(255,255,255));
+extern HBRUSH g_hBkgnd;
 
 MAP<STR, SOCKET> mBuffer;
 
@@ -41,8 +41,8 @@ LRESULT ServerHandler(SRV& srv, UINT event, SOCKET id)
 
                Eng.OnConnect(id);
 
-               char pcEcho[] = {255, 252, 1};
-               char pcBin[] = {255, 251, 0};
+               char pcEcho[] = {-127, -127, 1};
+               char pcBin[] = {-127, -127, 0};
 
                srv[id].Send(ARA<char>(pcEcho, 3));
                Sleep(10);

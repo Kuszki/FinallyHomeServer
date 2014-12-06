@@ -7,12 +7,12 @@ WINDRES  = windres.exe
 RES      = obj/FinallyHome_Server_private.res
 OBJ      = obj/main.o obj/server.o obj/callbacks.o obj/KuszkAPI.o $(RES)
 LINKOBJ  = obj/main.o obj/server.o obj/callbacks.o obj/KuszkAPI.o $(RES)
-LIBS     = -L"D:/Inne/Dev-Cpp/MinGW64/lib32" -L"D:/Inne/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -static-libgcc -mwindows -lgdi32 -lcomctl32 -lwsock32 -mwindows -m32
+LIBS     = -L"D:/Inne/Dev-Cpp/MinGW64/lib32" -L"D:/Inne/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -static-libgcc -mwindows -lgdi32 -lcomctl32 -lwsock32 -mwindows -m32 -s
 INCS     = -I"D:/Inne/Dev-Cpp/MinGW64/include" -I"D:/Inne/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Inne/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include"
-CXXINCS  = -I"D:/Inne/Dev-Cpp/MinGW64/include" -I"D:/Inne/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Inne/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"D:/Inne/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include/c++"
+CXXINCS  = -I"D:/Inne/Dev-Cpp/MinGW64/include" -I"D:/Inne/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Inne/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"D:/Inne/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include/c++" -I"D:/Inne/GitHub/KuszkAPI"
 BIN      = bin/Server.exe
-CXXFLAGS = $(CXXINCS) -Ofast -m32 -std=gnu++11 -D KUSZKAPI_TEMPLATE_SPEC=\"D:/Inne/GitHub/FinallyHomeServer/src/specs.hpp\" -D KUSZKAPI_PATH=\"D:/Inne/GitHub/KuszkAPI/KuszkAPI.hpp\"
-CFLAGS   = $(INCS) -Ofast -m32 -std=gnu++11
+CXXFLAGS = $(CXXINCS) -march=native -mtune=native -Ofast -m32 -std=gnu++11 -pipe -D KUSZKAPI_TEMPLATE_SPEC=\"D:/Inne/GitHub/FinallyHomeServer/src/specs.hpp\" -D KUSZKAPI_PATH=\"D:/Inne/GitHub/KuszkAPI/KuszkAPI.hpp\"
+CFLAGS   = $(INCS) -march=native -mtune=native -Ofast -m32 -std=gnu++11 -pipe
 RM       = rm.exe -f
 
 .PHONY: all all-before all-after clean clean-custom

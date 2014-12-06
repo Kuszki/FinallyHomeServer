@@ -39,6 +39,8 @@ Zawiera pętle obsługi zdarzeń dla głównego wątku oraz globalną instancję
 #include "callbacks.hpp"
 #include "server.hpp"
 
+HBRUSH g_hBkgnd = CreateSolidBrush(RGB(255,255,255));
+
 CON Console(false);
 WND Window;
 
@@ -60,6 +62,8 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
           TranslateMessage(&mMsg);
           DispatchMessage(&mMsg);
      }
+     
+     DeleteBrush(g_hBkgnd);
 
      return mMsg.wParam;
 }
