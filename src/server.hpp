@@ -208,7 +208,6 @@ using namespace KuszkAPI;
          *  \param [in] sVar Nazwa zmiennej.
          *  \param [in] iValue Nowa wartość zmiennej.
          *  \param [in] uFlags Określa flagi wywołania zdarzenia.
-         *  \todo Zaimplementować biblioteke zewnętrzną.
          *
          *  Metoda parsuje nazwę zmiennej, a następnie przekazuje jej identyfikator i nową wartość do odpowiedniej funkcji z biblioteki zewnętrznej.
          *
